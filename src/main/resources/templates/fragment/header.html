@@ -2,21 +2,18 @@
 <html lang="ko"
       xmlns:th="http://www.thymeleaf.org">
 <header th:fragment="header">
-	<nav class="navbar fixed-top navbar-expand navbar-light bg-light py-0 ml-1 border-bottom">
+	<nav class="navbar navbar-expand navbar-light bg-light py-0 ml-1 border-bottom border-dark">
 		<div class="container">
-			<a class="navbar-brand" th:href="@{/}">
-				<img th:src="@{/images/visitjeju.gif}" alt="logo" style="height: 50px">
-			</a>
+			<div class="navbar-brand">
+				<img th:src="@{/images/visitjeju.png}" alt="logo" style="height: 80px">
+			</div>
 			<div class="navbar-nav">
 				<ul class="navbar-nav me-auto mb-2 mb-xl-0">
 					<li class="nav-item mx-1">
-						<a class="nav-link text-dark" href="/">렌트카</a>
+						<a class="nav-link text-dark h4" href="/">렌트카</a>
 					</li>
 					<li class="nav-item mx-1">
-						<a class="nav-link text-dark" href="/">제주 실시간 지도 데이터</a>
-					</li>
-					<li class="nav-item mx-1">
-						<a class="nav-link text-dark" href="/">감귤</a>
+						<a class="nav-link text-dark h4" href="/bigdata/realtime-map">제주 빅데이터</a>
 					</li>
 				</ul>
 			</div>

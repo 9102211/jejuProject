@@ -1,25 +1,24 @@
-package com.thejoen.jeju.model.entitiy;
+package com.thejoen.jeju.model.network.dto.response;
 
+
+import com.thejoen.jeju.model.entitiy.RentalCar;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.ManyToOne;
 import java.time.LocalDateTime;
 
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Entity
-public class Review {
+public class ReviewResponseDTO {
 
-    @Id
-    @GeneratedValue
     private Long id;
 
     private String writer;
 
-    @Column(columnDefinition = "TEXT")
     private String content;
 
     private String type;
@@ -27,7 +26,4 @@ public class Review {
     private Double score;
 
     private LocalDateTime createdAt;
-
-    @ManyToOne
-    private RentalCar rentalCar;
 }

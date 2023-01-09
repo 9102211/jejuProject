@@ -1,12 +1,10 @@
 var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
 
 mapOption = { 
-    center: new kakao.maps.LatLng(33.37505849442243, 126.58152392245819), // 지도의 중심좌표
-    level: 9 // 지도의 확대 레벨
-}; 
-
+    center: new kakao.maps.LatLng(33.489728707440484, 126.49807382200203), // 지도의 중심좌표
+    level: 7 // 지도의 확대 레벨
+};
 var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
-
 var markers = [];
 var currentOverlay;
 
@@ -31,10 +29,13 @@ function setMarkers(rentalCarList) {
             position: new kakao.maps.LatLng(rentalCar.lat, rentalCar.lon)
         })
 
+        marker.id = rentalCar.id;
+
         markers[idx++] = marker;
 
         var wrap = document.createElement('div');
         wrap.className = 'wrap';
+        wrap.style = 'cursor: pointer;'
 
         var info = document.createElement('div');
         info.className = 'info';
@@ -77,10 +78,13 @@ function setMarkers(rentalCarList) {
         desc.appendChild(tel);
 
         var a = document.createElement('a');
-        a.href = '/rentalCar/' + rentalCar.id;
-        a.target= '_blank';
-        a.className = 'link';
+        a.className = 'link stretched-link';
         a.appendChild(document.createTextNode('자세히 보기'))
+        a.setAttribute('data-toggle', 'modal')
+        a.setAttribute('data-target', '#rentalCar-detail')
+        a.addEventListener('click', function () {
+            document.getElementById('rentalCar-detail').setAttribute('rentalCar_id', rentalCar.id);
+        })
         desc.appendChild(document.createElement('div').appendChild(a));
 
         body.appendChild(desc);
@@ -92,6 +96,7 @@ function setMarkers(rentalCarList) {
 
         // 마커를 클릭했을 때 커스텀 오버레이를 표시합니다
         kakao.maps.event.addListener(marker, 'click', function() {
+            map.panTo(marker.getPosition());
             deleteOverlay(overlay);
             currentOverlay = overlay;
             overlay.setMap(map);

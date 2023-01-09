@@ -15,7 +15,6 @@ import java.util.List;
 public class RentalCar {
 
     @Id
-    @GeneratedValue
     private Long id;
 
     private String name;
@@ -30,6 +29,8 @@ public class RentalCar {
 
     private Integer numberOfElectricVehicles;
 
+    private Double score;
+
     private LocalDateTime openTime;
 
     private LocalDateTime closeTime;
@@ -42,6 +43,6 @@ public class RentalCar {
 
     private Double lon;
 
-//    @OneToMany(fetch = FetchType.LAZY, mappedBy = "rentalCar")
-//    private List<Review> reviewList;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "rentalCar")
+    private List<Review> reviewList;
 }
