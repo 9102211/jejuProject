@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -45,4 +46,8 @@ public class EvChargingStation {
     private Long countOfTypeSix;
 
     private Long countOfTypeSeven;
+
+    private Long fast;
+
+    private Long slow;
 }

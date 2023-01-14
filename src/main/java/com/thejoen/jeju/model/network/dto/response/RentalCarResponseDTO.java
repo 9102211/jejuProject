@@ -27,9 +27,9 @@ public class RentalCarResponseDTO {
 
     private Integer numberOfElectricVehicles;
 
-    private LocalDateTime openTime;
+    private String openTime;
 
-    private LocalDateTime closeTime;
+    private String closeTime;
 
     private String tel;
 
@@ -39,13 +39,25 @@ public class RentalCarResponseDTO {
 
     private Double lon;
 
-    public RentalCarResponseDTO(Long id, String name, String address, String tel, Double lat, Double lon) {
+    private String image;
+
+    private Double naverScore;
+
+    private Double kakaoScore;
+
+    private Double googleScore;
+
+    public RentalCarResponseDTO(Long id, String name, String address, String tel, Double lat, Double lon, Double naverScore, Double kakaoScore, Double googleScore, String image) {
         this.id = id;
         this.name = name;
         this.address = address.replace("제주특별자치도 ", "");
         this.tel = tel;
         this.lat = lat;
         this.lon = lon;
+        this.naverScore = naverScore;
+        this.kakaoScore = kakaoScore;
+        this.googleScore = googleScore;
+        this.image = image == null ? "/images/car.png" : image;
     }
 
     public RentalCarResponseDTO(RentalCar rentalCar) {
@@ -62,5 +74,9 @@ public class RentalCarResponseDTO {
         this.homePage = rentalCar.getHomePage();
         this.lat = rentalCar.getLat();
         this.lon = rentalCar.getLon();
+        this.naverScore = rentalCar.getNaverScore();
+        this.kakaoScore = rentalCar.getKakaoScore();
+        this.googleScore = rentalCar.getGoogleScore();
+        this.image = rentalCar.getImage() == null ? "/images/car.png" : rentalCar.getImage();
     }
 }

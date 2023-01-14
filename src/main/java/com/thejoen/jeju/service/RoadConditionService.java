@@ -5,6 +5,7 @@ import com.thejoen.jeju.repository.RoadConditionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -16,8 +17,9 @@ public class RoadConditionService {
 
     private final RoadConditionRepository roadConditionRepository;
 
-    public ResponseEntity<List<RoadConditionResponseDTO>> findAllMostRecentEvent() {
-        List<RoadConditionResponseDTO> RoadConditionResponseDTOs = roadConditionRepository.findAllMostRecentEvent(LocalDateTime.now().minusMinutes(30))
+    @Transactional(readOnly = true)
+    public ResponseEntity<List<RoadConditionResponseDTO>> findAllMostRecentCondition() {
+        List<RoadConditionResponseDTO> RoadConditionResponseDTOs = roadConditionRepository.findAllMostRecentCondition(LocalDateTime.now().minusMinutes(30))
                 .stream().map(roadCondition -> new RoadConditionResponseDTO(roadCondition))
                 .collect(Collectors.toList());
 

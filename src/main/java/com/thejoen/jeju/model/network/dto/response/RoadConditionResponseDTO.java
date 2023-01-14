@@ -4,6 +4,7 @@ import com.thejoen.jeju.model.entitiy.RoadCondition;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Getter
 public class RoadConditionResponseDTO {
@@ -29,7 +30,7 @@ public class RoadConditionResponseDTO {
 
     private String code;
 
-    private LocalDateTime createdAt;
+    private String createdAt;
 
 
     public RoadConditionResponseDTO(RoadCondition roadCondition) {
@@ -44,6 +45,6 @@ public class RoadConditionResponseDTO {
         this.waterFilm = roadCondition.getWaterFilm();
         this.friction = roadCondition.getFriction();
         this.code = roadCondition.getCode();
-        this.createdAt = roadCondition.getCreatedAt();
+        this.createdAt = roadCondition.getCreatedAt().format(DateTimeFormatter.ofPattern("yy-MM-dd HH:mm"));;
     }
 }

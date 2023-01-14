@@ -13,6 +13,13 @@
         currentElements : 0        // 현재 데이터수
     };
 
+    var reviewPagination = {
+        totalPages : 0,            // 전체 페이지수
+        totalElements : 0,         // 전체 데이터수
+        currentPage :  0,          // 현재 페이지수
+        currentElements : 0        // 현재 데이터수
+    }
+
     var rentalCar = new Vue({
         el : '#rentalCar-detail',
         data : {
@@ -22,11 +29,6 @@
             reviewIsClicked : false
         },
         methods: {
-            showDetail : function() {
-                var rentalCarId = $('#rentalCar-detail').attr('rentalCar_id');
-                setDetail(rentalCarId);
-            },
-
             showContent : function() {
                 if(!this.contentIsClicked) {
                     this.contentIsClicked = true
@@ -39,6 +41,11 @@
                     this.reviewIsClicked = true
                     this.contentIsClicked = false
                 }
+            },
+
+            showMore : function() {
+                index = reviewPagination.currentPage + 1;
+                setReview(index);
             }
         }
     })
@@ -67,7 +74,6 @@
             }
         }
     });
-
 
     // 페이지 버튼 리스트
     var pageBtnList = new Vue({
@@ -114,7 +120,6 @@
     });
 
     function searchStart(index) {
-        console.log("index : " + index)
         //이전 마커 지우기
         deleteMarkers()
         if(currentOverlay != null) {
@@ -128,7 +133,6 @@
             pagination = response.pagination;
 
             //전체 페이지
-
             showPage.totalElements = pagination.totalElements;
             showPage.currentPage = pagination.currentPage+1;
             // 검색 데이터
@@ -173,9 +177,28 @@
 
     function setDetail(id) {
         $.get("/api/v1/rentalCar/" + id, function (response) {
-
             rentalCar.rentalCar = response;
-
         });
     }
+
+    function setReview(index) {
+        var rentalCarId = $('#rentalCar-detail').attr('rentalCar_id');
+        $.get("/api/v1/review?page=" + index + "&rentalCarId=" + rentalCarId, function (response) {
+
+            if(index === 0) {
+                rentalCar.reviewList = response.data;
+            }else {
+                rentalCar.reviewList = rentalCar.reviewList.concat(response.data);
+            }
+
+            reviewPagination = response.pagination;
+        })
+    }
+
+    $('#rentalCar-detail').on('show.bs.modal', function (event) {
+        var rentalCarId = $('#rentalCar-detail').attr('rentalCar_id');
+        setDetail(rentalCarId);
+        setReview(0);
+        rentalCar.showContent();
+    })
 })(jQuery);

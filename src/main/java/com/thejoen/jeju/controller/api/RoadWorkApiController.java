@@ -1,7 +1,7 @@
 package com.thejoen.jeju.controller.api;
 
-import com.thejoen.jeju.model.network.dto.response.RoadCloseResponseDTO;
-import com.thejoen.jeju.service.RoadCloseService;
+import com.thejoen.jeju.model.network.dto.response.RoadWorkResponseDTO;
+import com.thejoen.jeju.service.RoadWorkService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,13 +13,12 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1")
-public class RoadCloseApiController {
+public class RoadWorkApiController {
 
-    private final RoadCloseService roadCloseService;
+    private final RoadWorkService roadWorkService;
 
-    @GetMapping("/roadClose")
-    public ResponseEntity<List<RoadCloseResponseDTO>> findAllMostRecentClose() {
-        return roadCloseService.findAllMostRecentClose();
+    @GetMapping("/roadWork")
+    public ResponseEntity<List<RoadWorkResponseDTO>> findAllMostRecentEvent() {
+        return roadWorkService.findAllMostRecentWork();
     }
-
 }

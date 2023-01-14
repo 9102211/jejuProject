@@ -4,6 +4,7 @@ import com.thejoen.jeju.model.entitiy.RoadClose;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Getter
 public class RoadCloseResponseDTO {
@@ -23,9 +24,9 @@ public class RoadCloseResponseDTO {
 
     private String text;
 
-    private LocalDateTime createdAt;
+    private String createdAt;
 
-    private LocalDateTime lastUpdatedAt;
+    private String lastUpdatedAt;
 
     public RoadCloseResponseDTO(RoadClose roadClose) {
         this.id = roadClose.getId();
@@ -36,7 +37,7 @@ public class RoadCloseResponseDTO {
         this.wholeLane = roadClose.getWholeLane();
         this.blockLane = roadClose.getBlockLane();
         this.text = roadClose.getText();
-        this.createdAt = roadClose.getCreatedAt();
-        this.lastUpdatedAt = roadClose.getLastUpdatedAt();
+        this.createdAt = roadClose.getCreatedAt().format(DateTimeFormatter.ofPattern("yy-MM-dd HH:mm"));;
+        this.lastUpdatedAt = roadClose.getLastUpdatedAt().format(DateTimeFormatter.ofPattern("yy-MM-dd HH:mm"));;
     }
 }

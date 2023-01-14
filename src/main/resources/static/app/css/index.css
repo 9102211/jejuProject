@@ -19,6 +19,16 @@
     border: 1px solid #ccc;
 }
 
+.btn-primary {
+    background-color: #7dc2ef;
+    border-color: #7dc2ef;
+}
+
+.btn-primary:hover{
+    background-color:#98c5df;
+    border-color: #98c5df;
+}
+
 .page-item.active .page-link {
     z-index: 1;
     color: white;

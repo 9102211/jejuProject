@@ -11,6 +11,6 @@ import java.util.List;
 public interface RoadCloseRepository extends JpaRepository<RoadClose, String> {
 
     @Query("select r from RoadClose r where r.lastUpdatedAt >= :threshold and r.lastUpdatedAt = (select max(r2.lastUpdatedAt) from RoadClose r2)")
-    List<RoadClose> findAllMostRecentEvent(LocalDateTime threshold);
+    List<RoadClose> findAllMostRecentClose(LocalDateTime threshold);
 
 }

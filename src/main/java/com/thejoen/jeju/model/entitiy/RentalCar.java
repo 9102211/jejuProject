@@ -29,11 +29,9 @@ public class RentalCar {
 
     private Integer numberOfElectricVehicles;
 
-    private Double score;
+    private String openTime;
 
-    private LocalDateTime openTime;
-
-    private LocalDateTime closeTime;
+    private String closeTime;
 
     private String tel;
 
@@ -42,6 +40,14 @@ public class RentalCar {
     private Double lat;
 
     private Double lon;
+
+    private String image;
+
+    private Double naverScore;
+
+    private Double kakaoScore;
+
+    private Double googleScore;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "rentalCar")
     private List<Review> reviewList;

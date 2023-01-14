@@ -61,13 +61,13 @@
                                         주차장
                                     </li>
                                     <li class="list-group-item border-0 p-2 m-2">
-                                        <button type="button" class="btn btn-outline-secondary btn-layer stretched-link rounded-circle d-block m-2">
+                                        <button id="btn-gas-station" type="button" class="btn btn-outline-secondary btn-layer stretched-link rounded-circle d-block m-2">
                                             <i class="bi bi-fuel-pump-fill"></i>
                                         </button>
                                         주유소
                                     </li>
                                     <li class="list-group-item border-0 p-2 m-2">
-                                        <button id="btn-ev-station" type="button" class="btn btn-outline-secondary btn-layer stretched-link rounded-circle d-block m-2">
+                                        <button id="btn-ev-charging-station" type="button" class="btn btn-outline-secondary btn-layer stretched-link rounded-circle d-block m-2">
                                             <i class="bi bi-lightning-charge-fill"></i>
                                         </button>
                                         충전소
@@ -79,7 +79,7 @@
                 </div>
             </div>
         </main>
-        <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=69101a0b646ceaf35f15bd1e1d696182&libraries=services"></script>
+        <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=69101a0b646ceaf35f15bd1e1d696182&libraries=services,clusterer,drawing"></script>
         <script th:src="@{/app/js/status-code.js}"></script>
         <script th:src="@{/app/js/bigdata-kakaomap.js}"></script>
     </th:block>

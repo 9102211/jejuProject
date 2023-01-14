@@ -14,20 +14,18 @@ public class PageController {
     private final RentalCarService rentalCarService;
 
     @GetMapping("/")
-    public String index(Model model) {
-
+    public String index() {
         return "index";
     }
 
     @GetMapping("/bigdata/realtime-map")
     public String realTimeMap() {
-
         return "realtime-map";
     }
 
-    @GetMapping("/bigdata/something")
+    @GetMapping("/bigdata/dashboard")
     public String something() {
-        return "something";
+        return "dashboard";
     }
 
 }

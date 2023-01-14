@@ -35,7 +35,9 @@ public class RentalCarRepositoryImpl implements RentalCarRepositoryCustom{
                 .select(Projections.constructor(RentalCarResponseDTO.class,
                         rentalCar.id, rentalCar.name,
                         rentalCar.address, rentalCar.tel,
-                        rentalCar.lat, rentalCar.lon
+                        rentalCar.lat, rentalCar.lon,
+                        rentalCar.naverScore, rentalCar.kakaoScore,
+                        rentalCar.googleScore, rentalCar.image
                         ))
                 .from(rentalCar)
                 .where(
@@ -75,8 +77,14 @@ public class RentalCarRepositoryImpl implements RentalCarRepositoryCustom{
                 Order direction = order.getDirection().isAscending() ? Order.ASC : Order.DESC;
 
                 switch (order.getProperty()) {
-                    case "score" :
-                        orders.add(new OrderSpecifier(direction, rentalCar.score));
+                    case "naverScore" :
+                        orders.add(new OrderSpecifier(direction, rentalCar.naverScore));
+                        break;
+                    case "kakaoScore" :
+                        orders.add(new OrderSpecifier(direction, rentalCar.kakaoScore));
+                        break;
+                    case "googleScore" :
+                        orders.add(new OrderSpecifier(direction, rentalCar.googleScore));
                         break;
                     case "numberOfTotalVehicles" :
                         orders.add(new OrderSpecifier(direction, rentalCar.numberOfTotalVehicles));

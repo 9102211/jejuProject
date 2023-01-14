@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:v-on="http://www.w3.org/1999/xhtml"
+      xmlns:v-bind="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+<body>
+<th:block layout:fragment="content">
+  <main role="main">
+    <div class="row no-gutters flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+      <div th:replace="fragment/sidebar :: sidebar"></div>
+      <div class="col-10">
+        <div class="border-bottom py-2 px-3">
+          <h2>DashBoard</h2>
+          <select id="year">
+            <option>2022</option>
+            <option>2021</option>
+            <option>2020</option>
+            <option>2019</option>
+            <option>2018</option>
+          </select>
+          <select id="category">
+          </select>
+        </div>
+        <div class="px-5 py-5 d-flex justify-content-center border-bottom">
+          <img id="chart" class="my-2" style="width: 70%; min-width: 550px" th:src="@{/images/chart/test.png}" alt="data">
+        </div>
+        <div class="px-3 my-5 d-flex justify-content-center">
+          <img id="table" style="width: 90%; min-width: 700px" th:src="@{/images/chart/test1.png}" alt="data">
+        </div>
+      </div>
+    </div>
+  </main>
+  <script src="/app/js/dashboard.js"></script>
+</th:block>
+</body>
+</html>

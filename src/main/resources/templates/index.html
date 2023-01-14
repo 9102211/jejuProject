@@ -16,7 +16,7 @@
             <div class="col-4 p-4 d-flex flex-column position-static bg-light">
                 <div class="justify-content-between d-flex py-3">
                     <div>
-                        <span id="showPage" class="text-warning" aria-live="polite">{{totalElements}}</span>
+                        <span id="showPage" aria-live="polite" style="color: #A3DAFA">{{totalElements}}</span>
                         <span>개의 결과가 있습니다.</span>
                     </div>
                     <div id="searchCondition">
@@ -32,7 +32,9 @@
                         </div>
                         <select id="sort" v-on:change="changeSort()">
                             <option value="name">이름순</option>
-                            <option value="score">평점순</option>
+                            <option value="naverScore">네이버 평점순</option>
+                            <option value="kakaoScore">카카오 평점순</option>
+                            <option value="googleScore">구글 평점순</option>
                             <option value="numberOfTotalVehicles">보유차량순</option>
                         </select>
                     </div>
@@ -43,14 +45,18 @@
                             <div class="d-flex">
                                 <div>
                                     <a class="stretched-link" href="javascript:;" v-on:click="showMarker(rentalCar.id)">
-                                        <img style="width: 190px; height: 140px" src="/images/rent.png" alt="사진이해효">
+                                        <img style="width: 190px; height: 140px" v-bind:src="rentalCar.image" alt="사진이해효">
                                     </a>
                                 </div>
                                 <div class="w-100 ml-3 py-3 d-flex align-items-center">
                                     <div>
                                         <p class="text-left h4" style="word-wrap:break-word;">{{rentalCar.name}}</p>
                                         <p class="text-left text-muted mb-1"> {{rentalCar.address}}</p>
-                                        <p class="mb-1">⭐⭐⭐⭐⭐</p>
+                                        <div>
+                                            <span v-if="rentalCar.naverScore>0"><img class="mr-2" src="/images/naver.png" alt="" style="width: 25px; height: 25px">{{rentalCar.naverScore}}/5</span>
+                                            <span v-if="rentalCar.kakaoScore>0"><img class="mx-2" src="/images/kakao.png" alt=""  style="width: 25px; height: 25px">{{rentalCar.kakaoScore}}/5</span>
+                                            <span v-if="rentalCar.googleScore>0"><img class="mx-2" src="/images/google.png" alt="" style="width: 25px; height: 25px">{{rentalCar.googleScore}}/5</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -62,11 +68,9 @@
                         <li class="page-item paginate_button previous" id="previousBtn">
                             <a class="page-link" href="javascript:;" v-on:click="previousClick()">&laquo;</a>
                         </li>
-
                         <li class="page-item paginate_button" v-for="btn in btnList" v-bind:btn_id="btn" v-on:click="indexClick(btn)">
                             <a class="page-link" href="javascript:;" aria-controls="example2">{{btn}}</a>
                         </li>
-
                         <li class="page-item paginate_button next" id="nextBtn">
                             <a class="page-link" href="javascript:;" v-on:click="nextClick()">&raquo;</a>
                         </li>
@@ -80,7 +84,7 @@
     </main>
     <!-- Main end -->
     <!-- Modal start -->
-    <div class="modal" tabindex="-1" id="rentalCar-detail" v-bind:rentalCar = "rentalCar" v-on:focus="showDetail()">
+    <div class="modal" tabindex="-1" id="rentalCar-detail" v-bind:rentalCar = "rentalCar">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
@@ -88,16 +92,15 @@
                 </div>
                 <div class="modal-body px-0">
                     <div class="justify-content-center d-flex py-3">
-                        <img src="/images/rent.png" alt="" style="width: 430px; height: 400px;">
+                        <img v-bind:src="rentalCar.image" alt="" style="width: 500px; height: 400px;">
                     </div>
                     <div class="justify-content-center d-flex my-1">
-                        <div class="justify-content-between d-flex" style="width: 430px;">
+                        <div class="justify-content-between d-flex" style="width: 500px;">
                             <span class="h3">{{rentalCar.name}}</span>
-                            <span class="pt-2">⭐⭐⭐⭐⭐</span>
                         </div>
                     </div>
                     <div class="justify-content-center d-flex my-1">
-                        <div style="width: 430px;">
+                        <div style="width: 500px;">
                             <div>
                                 <span class="pr-1" style="cursor: pointer;" v-on:click="showContent()">세부 정보</span>
                                 <span class="pl-1" style="cursor: pointer;" v-on:click="showReview()">종합 후기</span>
@@ -111,13 +114,25 @@
                                     <p>전기차 수 : {{rentalCar.numberOfElectricVehicles}}</p>
                                     <p>승합차 수 : {{rentalCar.numberOfVans}}</p>
                                     <p><i class="bi bi-telephone"></i> 전화번호 : {{rentalCar.tel}}</p>
-                                    <p><i class="bi bi-window"></i> 홈페이지 : {{rentalCar.homepage}}</p>
+                                    <p><i class="bi bi-window"></i> 홈페이지 : <a v-bind:href="rentalCar.homePage">{{rentalCar.homePage}}</a></p>
                                 </div>
                                 <div v-show="reviewIsClicked">
-
-
-
-
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item px-0" v-for="review in reviewList">
+                                            <div>
+                                                <span>{{review.writer}}</span>
+                                                <span>{{review.createdAt}}</span>
+                                                <span>{{review.type}}</span>
+                                                <span>{{review.score}}</span>
+                                            </div>
+                                            <div>
+                                                <p>{{review.content}}</p>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <div>
+                                        <button class="btn btn-primary btn-block" v-on:click="showMore()">더보기</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>

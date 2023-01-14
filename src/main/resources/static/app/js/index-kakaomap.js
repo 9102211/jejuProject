@@ -24,9 +24,14 @@ function setMarkers(rentalCarList) {
     var idx = 0;
 
     rentalCarList.forEach(function (rentalCar){
+        var imageSrc = '/images/markers/rental-car.png',
+            imageSize = new kakao.maps.Size(40, 40),
+            imageOption = {offset : new kakao.maps.Point(20, 35)}
+
         var marker = new kakao.maps.Marker({
             map: map,
-            position: new kakao.maps.LatLng(rentalCar.lat, rentalCar.lon)
+            position: new kakao.maps.LatLng(rentalCar.lat, rentalCar.lon),
+            image : new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption)
         })
 
         marker.id = rentalCar.id;
@@ -61,7 +66,7 @@ function setMarkers(rentalCarList) {
         imgDiv.className = 'img';
         body.appendChild(imgDiv);
         var img = document.createElement('img');
-        img.src = '/images/rent.png';
+        img.src = rentalCar.image;
         img.style = 'width:73px; height:70px';
         imgDiv.appendChild(img);
 

@@ -10,5 +10,5 @@ import java.util.List;
 public interface RoadConditionRepository extends JpaRepository<RoadCondition, Long> {
 
     @Query("select r from RoadCondition r where r.createdAt >= :threshold and r.createdAt = (select max(r2.createdAt) from RoadCondition r2)")
-    List<RoadCondition> findAllMostRecentEvent(LocalDateTime threshold);
+    List<RoadCondition> findAllMostRecentCondition(LocalDateTime threshold);
 }

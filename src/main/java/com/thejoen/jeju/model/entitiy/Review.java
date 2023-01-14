@@ -1,5 +1,6 @@
 package com.thejoen.jeju.model.entitiy;
 
+import com.thejoen.jeju.model.enumclass.ReviewType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,7 +23,8 @@ public class Review {
     @Column(columnDefinition = "TEXT")
     private String content;
 
-    private String type;
+    @Enumerated(EnumType.STRING)
+    private ReviewType type;
 
     private Double score;
 

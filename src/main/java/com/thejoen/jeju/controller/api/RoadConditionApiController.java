@@ -20,6 +20,6 @@ public class RoadConditionApiController {
 
     @GetMapping("/roadCondition")
     public ResponseEntity<List<RoadConditionResponseDTO>> findAllMostRecentEvent() {
-        return roadConditionService.findAllMostRecentEvent();
+        return roadConditionService.findAllMostRecentCondition();
     }
 }

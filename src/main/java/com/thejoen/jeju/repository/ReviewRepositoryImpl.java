@@ -38,8 +38,9 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom{
                         review.createdAt
                 ))
                 .from(review)
-//                .where(
-//                )
+                .where(
+                        review.rentalCar.id.eq(request.getRentalCarId())
+                )
 //                .orderBy(ORDERS.stream().toArray(OrderSpecifier[]::new))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())

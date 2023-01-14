@@ -13,5 +13,4 @@ public class ReviewSearchRequestDTO {
 
     private List<String> type;
 
-
 }
