@@ -8,7 +8,8 @@ var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니
 var roadEventMarkers = [],
     roadConditionMarkers = [];
 
-var gasStationMarkers = [],
+var parkingMarkers = [],
+    gasStationMarkers = [],
     evChargingStationMarkers = [],
     cluster = new kakao.maps.MarkerClusterer({
     map: map, // 마커들을 클러스터로 관리하고 표시할 지도 객체
@@ -120,9 +121,9 @@ function setRoadCloseMarkers() {
                 image : new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption)
             })
 
-            var iwContent = '<div style="width: 150px">' +
+            var iwContent = '<div style="width: 300px">' +
                 '<p class="text-danger m-0"><i class="bi bi-sign-stop-fill"></i>도로 통제 정보</p>' +
-                '<p class="mt-1 mb-0"> 상황 :  </p>' +
+                '<p class="mt-1 mb-0"> 상황 :  '+roadClose.text+ ' </p>' +
                 '<p class="mb-1 text-muted" style="font-size: 0.7rem">기준 : ' +roadClose.lastUpdatedAt + '</p>' +
                 '</div>'
 
@@ -149,21 +150,21 @@ function setRoadCloseMarkers() {
 function setRoadWorkMarkers() {
     $.get("/api/v1/roadWork", function (response) {
 
-        var imageSrc = '/images/markers/road-event.png',
+        var imageSrc = '/images/markers/road-work.png',
             imageSize = new kakao.maps.Size(40, 40),
             imageOption = {offset : new kakao.maps.Point(20, 35)}
 
-        response.forEach(function (roadClose) {
+        response.forEach(function (roadWork) {
             var marker = new kakao.maps.Marker({
                 map: map,
-                position: new kakao.maps.LatLng(roadClose.lat, roadClose.lon),
+                position: new kakao.maps.LatLng(roadWork.lat, roadWork.lon),
                 image : new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption)
             })
 
-            var iwContent = '<div style="width: 150px">' +
-                '<p class="text-danger m-0"><i class="bi bi-sign-stop-fill"></i>도로 작업 정보</p>' +
-                '<p class="mt-1 mb-0"> 상황 :  </p>' +
-                '<p class="mb-1 text-muted" style="font-size: 0.7rem">기준 : ' +roadClose.lastUpdatedAt + '</p>' +
+            var iwContent = '<div style="width: 300px">' +
+                '<p class="text-danger m-0"><i class="bi bi-hammer"></i>도로 작업 정보</p>' +
+                '<p class="mt-1 mb-0"> 상황 :  '+roadWork.text+ ' </p>' +
+                '<p class="mb-1 text-muted" style="font-size: 0.7rem">기준 : ' +roadWork.lastUpdatedAt + '</p>' +
                 '</div>'
 
             var infowindow = new kakao.maps.InfoWindow({
@@ -265,10 +266,90 @@ function setRoadConditionMarkers() {
     })
 }
 
+/* 주차장 버튼 이벤트 */
+$('#btn-parking').on('click', function(e) {
+    if($('#btn-gas-station').hasClass('active')) {
+        $('#btn-gas-station').removeClass('active')
+        deleteMarkers(gasStationMarkers)
+        cluster.clear()
+    }
+
+    if($('#btn-ev-charging-station').hasClass('active')) {
+        $('#btn-ev-charging-station').removeClass('active')
+        deleteMarkers(evChargingStationMarkers)
+        cluster.clear()
+    }
+
+    if(!$(e.target).hasClass('active')) {
+        $(e.target).addClass('active')
+        setParkingMarkers()
+    }else {
+        $(e.target).removeClass('active')
+        deleteMarkers(parkingMarkers)
+        cluster.clear();
+    }
+})
+
+function setParkingMarkers() {
+    $.get("/api/v1/parking", function (response) {
+        deleteMarkers(parkingMarkers)
+        parkingMarkers = []
+        cluster.clear();
+
+        var imageSrc = '/images/markers/parking.png',
+            imageSize = new kakao.maps.Size(40, 40),
+            imageOption = {offset : new kakao.maps.Point(20, 35)}
+
+        response.forEach(function (parking) {
+            var marker = new kakao.maps.Marker({
+                position: new kakao.maps.LatLng(parking.lat, parking.lon),
+                image : new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption),
+            })
+
+            var iwContent = '<div class="p-2" style="width: 450px">' +
+                '<p class="mb-2 h5">'+parking.name+'(' + parking.type + ')</p>' +
+                '<p class="m-0" style="font-size: 0.9rem"><i class="bi bi-geo-alt-fill"></i> ' + parking.addr + '</p>' +
+                '<p class="m-0" style="font-size: 0.9rem"><i class="bi bi-grid-3x3"></i> ' + parking.countOfArea + '구획</p>' +
+                '<p class="m-0" style="font-size: 0.9rem"><i class="bi bi-calendar-day"></i> ' + parking.operatingDate + '</p>';
+
+            if(parking.free === '유료') {
+                iwContent += '<p class="m-0" style="font-size: 0.9rem">기본시간 : ' + parking.basicTime + '분</p>' +
+                    '<p class="m-0" style="font-size: 0.9rem">기본요금 : ' + parking.basicFee + '원</p>' +
+                    '<p class="m-0" style="font-size: 0.9rem">추가단위시간 : ' + parking.extraTime + '분</p>' +
+                    '<p class="m-0" style="font-size: 0.9rem">추가단위요금 :  ' + parking.extraFee + '원</p>' +
+                    '</div>'
+            }else {
+                iwContent += '</div>';
+            }
+
+            var infowindow = new kakao.maps.InfoWindow({
+                position : marker.getPosition(),
+                content : iwContent,
+                removable : true
+            })
+
+            marker.iw = infowindow;
+
+            kakao.maps.event.addListener(marker, 'click', function() {
+                deleteInfoWindow(currentInfoWindow)
+                currentInfoWindow = infowindow
+                infowindow.open(map, marker)
+            });
+
+            parkingMarkers.push(marker)
+            cluster.addMarkers(parkingMarkers)
+        })
+    })
+}
 
 
 /* 주유소 버튼 이벤트 */
 $('#btn-gas-station').on('click', function(e) {
+    if($('#btn-parking').hasClass('active')) {
+        $('#btn-parking').removeClass('active')
+        deleteMarkers(parkingMarkers)
+        cluster.clear()
+    }
 
     if($('#btn-ev-charging-station').hasClass('active')) {
         $('#btn-ev-charging-station').removeClass('active')
@@ -303,10 +384,14 @@ function setGasStationMarkers() {
                 image : new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption),
             })
 
+            var price = gasStation.lpgYN === 'Y' ? 'LPG : ' + gasStation.lpg : '휘발유 : ' + gasStation.gasoline + ' 경유 : ' + gasStation.diesel;
+
+
             var iwContent = '<div class="p-2" style="width: 450px">' +
                 '<p class="mb-2 h5">'+gasStation.name+'</p>' +
                 '<p class="m-0" style="font-size: 0.9rem"><i class="bi bi-geo-alt-fill"></i> ' + gasStation.addr + '</p>' +
                 '<p class="m-0" style="font-size: 0.9rem"><i class="bi bi-telephone"></i> ' +gasStation.tel + '</p>' +
+                '<p class="m-0" style="font-size: 0.9rem"> ' + price + '</p>' +
                 '</div>'
 
             var infowindow = new kakao.maps.InfoWindow({
@@ -332,6 +417,11 @@ function setGasStationMarkers() {
 
 /* 전기차 충전소 버튼 이벤트 */
 $('#btn-ev-charging-station').on('click', function(e) {
+    if($('#btn-parking').hasClass('active')) {
+        $('#btn-parking').removeClass('active')
+        deleteMarkers(parkingMarkers)
+        cluster.clear()
+    }
 
     if($('#btn-gas-station').hasClass('active')) {
         $('#btn-gas-station').removeClass('active')

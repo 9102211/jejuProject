@@ -1,9 +1,11 @@
 package com.thejoen.jeju.model.network.dto.response;
 
 import com.thejoen.jeju.model.entitiy.RoadWork;
+import lombok.Getter;
 
 import java.time.format.DateTimeFormatter;
 
+@Getter
 public class RoadWorkResponseDTO {
 
         private String id;

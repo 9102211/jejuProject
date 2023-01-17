@@ -18,6 +18,12 @@ public class GasStationResponseDTO {
 
     private Double lon;
 
+    private Long gasoline;
+
+    private Long diesel;
+
+    private Long lpg;
+
     public GasStationResponseDTO(GasStation gasStation) {
         this.id = gasStation.getId();
         this.name = gasStation.getName();
@@ -26,5 +32,8 @@ public class GasStationResponseDTO {
         this.lpgYN = gasStation.getLpgYN();
         this.lat = gasStation.getLat();
         this.lon = gasStation.getLon();
+        this.gasoline = gasStation.getGasoline();
+        this.diesel = gasStation.getDiesel();
+        this.lpg = gasStation.getLpg();
     }
 }

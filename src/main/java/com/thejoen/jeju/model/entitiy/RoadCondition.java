@@ -40,7 +40,4 @@ public class RoadCondition {
     private String code;
 
     private LocalDateTime createdAt;
-
-
-
 }

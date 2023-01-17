@@ -18,6 +18,11 @@ public class PageController {
         return "index";
     }
 
+    @GetMapping("/rental-car")
+    public String rentalCar() {
+        return "rental-car";
+    }
+
     @GetMapping("/bigdata/realtime-map")
     public String realTimeMap() {
         return "realtime-map";

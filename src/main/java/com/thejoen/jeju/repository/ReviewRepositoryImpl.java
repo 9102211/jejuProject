@@ -9,6 +9,7 @@ import com.thejoen.jeju.model.entitiy.QRentalCar;
 import com.thejoen.jeju.model.entitiy.QReview;
 import com.thejoen.jeju.model.entitiy.RentalCar;
 import com.thejoen.jeju.model.entitiy.Review;
+import com.thejoen.jeju.model.enumclass.ReviewType;
 import com.thejoen.jeju.model.network.dto.request.ReviewSearchRequestDTO;
 import com.thejoen.jeju.model.network.dto.response.RentalCarResponseDTO;
 import com.thejoen.jeju.model.network.dto.response.ReviewResponseDTO;
@@ -28,8 +29,6 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom{
     private QReview review = QReview.review;
     @Override
     public Page<ReviewResponseDTO> search(ReviewSearchRequestDTO request, Pageable pageable) {
-//        List<OrderSpecifier> ORDERS = getOrderSpecifier(pageable.getSort());
-
         List<ReviewResponseDTO> content = queryFactory
                 .select(Projections.constructor(ReviewResponseDTO.class,
                         review.id,
@@ -39,16 +38,37 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom{
                 ))
                 .from(review)
                 .where(
-                        review.rentalCar.id.eq(request.getRentalCarId())
+                        review.rentalCar.id.eq(request.getRentalCarId()),
+                        typeEq(request.getType())
                 )
-//                .orderBy(ORDERS.stream().toArray(OrderSpecifier[]::new))
+                .orderBy(review.createdAt.desc().nullsLast())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
 
         JPQLQuery<Review> countQuery = queryFactory
-                .selectFrom(review);
+                .selectFrom(review)
+                .where(
+                        review.rentalCar.id.eq(request.getRentalCarId()),
+                        typeEq(request.getType())
+                );
 
         return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchCount);
+    }
+
+    private BooleanExpression typeEq(List<ReviewType> type) {
+        return type != null ? review.type.in(type) : null;
+    }
+
+    private BooleanExpression naver(Boolean naver) {
+        return naver != null && naver ? review.type.eq(ReviewType.valueOf("NAVER")) : null;
+    }
+
+    private BooleanExpression kakao(Boolean kakao) {
+        return kakao != null && kakao? review.type.eq(ReviewType.valueOf("KAKAO")) : null;
+    }
+
+    private BooleanExpression google(Boolean google) {
+        return google != null && google ? review.type.eq(ReviewType.valueOf("GOOGLE")) : null;
     }
 }

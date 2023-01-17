@@ -1,37 +1,45 @@
 package com.thejoen.jeju.model.entitiy;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import java.math.BigDecimal;
 
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Entity
-public class GasStation {
+public class Parking {
+
     @Id
     private String id;
 
     private String name;
 
+    private String type;
+
     private String addr;
 
-    private String tel;
+    private String free;
 
-    private Character lpgYN;
+    private Integer countOfArea;
+
+    private String operatingDate;
+
+    private Long basicTime;
+
+    private Long basicFee;
+
+    private Long extraTime;
+
+    private Long extraFee;
 
     private Double lat;
 
     private Double lon;
 
-    private Long gasoline;
 
-    private Long diesel;
 
-    private Long lpg;
 }

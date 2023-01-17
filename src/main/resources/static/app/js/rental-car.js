@@ -42,10 +42,13 @@
                     this.contentIsClicked = false
                 }
             },
-
             showMore : function() {
                 index = reviewPagination.currentPage + 1;
                 setReview(index);
+            },
+
+            changeCondition : function () {
+                setReview(0);
             }
         }
     })
@@ -109,7 +112,6 @@
 
             changeSort: function () {
                 sort = $('#sort').val() + ',desc';
-                console.log(sort);
                 searchStart(0)
             }
         }
@@ -183,7 +185,13 @@
 
     function setReview(index) {
         var rentalCarId = $('#rentalCar-detail').attr('rentalCar_id');
-        $.get("/api/v1/review?page=" + index + "&rentalCarId=" + rentalCarId, function (response) {
+        var checked = $('#type').find("input[type='checkbox']:checked");
+        var type = [];
+
+        for(var i=0; i<checked.length; i++) {
+            type.push(checked[i].value);
+        }
+        $.get("/api/v1/review?page=" + index + "&rentalCarId=" + rentalCarId + "&type=" + type, function (response) {
 
             if(index === 0) {
                 rentalCar.reviewList = response.data;
@@ -201,4 +209,11 @@
         setReview(0);
         rentalCar.showContent();
     })
+
+    $('.modal').on('hidden.bs.modal', function (e) {
+        $('naver').prop('checked', true);
+        $('kakao').prop('checked', true);
+        $('google').prop('checked', true);
+    });
+
 })(jQuery);

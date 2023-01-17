@@ -34,6 +34,6 @@ public class ReviewResponseDTO {
         this.content = content;
         this.type = type.getTitle();
         this.score = score;
-        this.createdAt = createdAt.format(DateTimeFormatter.ofPattern("yy/MM/dd"));;
+        this.createdAt = createdAt != null ? createdAt.format(DateTimeFormatter.ofPattern("yy/MM/dd")) : null;
     }
 }

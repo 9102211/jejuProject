@@ -21,13 +21,19 @@
             <option>2018</option>
           </select>
           <select id="category">
+            <option>렌터카 불만사항</option>
+          </select>
+          <select id="legend">
+            <option>연령별</option>
           </select>
         </div>
         <div class="px-5 py-5 d-flex justify-content-center border-bottom">
-          <img id="chart" class="my-2" style="width: 70%; min-width: 550px" th:src="@{/images/chart/test.png}" alt="data">
+          <div style="width:80%">
+            <canvas id="myChart"></canvas>
+          </div>
         </div>
         <div class="px-3 my-5 d-flex justify-content-center">
-          <img id="table" style="width: 90%; min-width: 700px" th:src="@{/images/chart/test1.png}" alt="data">
+          <img id="table" style="width: 90%; min-width: 700px" src="" alt="data">
         </div>
       </div>
     </div>
