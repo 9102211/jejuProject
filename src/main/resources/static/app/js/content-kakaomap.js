@@ -1,8 +1,8 @@
 var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
 
 mapOption = { 
-    center: new kakao.maps.LatLng(33.489728707440484, 126.49807382200203), // 지도의 중심좌표
-    level: 7 // 지도의 확대 레벨
+    center: new kakao.maps.LatLng(33.34, 126.53), // 지도의 중심좌표
+    level: 9 // 지도의 확대 레벨
 };
 var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
 var markers = [];
@@ -20,21 +20,21 @@ function deleteOverlay(overlay) {
     }
 }
 
-function setMarkers(rentalCarList) {
+function setMarkers(contentList) {
     var idx = 0;
 
-    rentalCarList.forEach(function (rentalCar){
+    contentList.forEach(function (content){
         var imageSrc = '/images/markers/rental-car.png',
             imageSize = new kakao.maps.Size(40, 40),
             imageOption = {offset : new kakao.maps.Point(20, 35)}
 
         var marker = new kakao.maps.Marker({
             map: map,
-            position: new kakao.maps.LatLng(rentalCar.lat, rentalCar.lon),
+            position: new kakao.maps.LatLng(content.lat, content.lon),
             image : new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption)
         })
 
-        marker.id = rentalCar.id;
+        marker.id = content.id;
 
         markers[idx++] = marker;
 
@@ -48,7 +48,7 @@ function setMarkers(rentalCarList) {
 
         var title = document.createElement('div');
         title.className = 'title';
-        title.appendChild(document.createTextNode(rentalCar.name));
+        title.appendChild(document.createTextNode(content.title));
         info.appendChild(title);
 
         var close = document.createElement('div');
@@ -66,7 +66,7 @@ function setMarkers(rentalCarList) {
         imgDiv.className = 'img';
         body.appendChild(imgDiv);
         var img = document.createElement('img');
-        img.src = rentalCar.image;
+        img.src = content.image;
         img.style = 'width:73px; height:70px';
         imgDiv.appendChild(img);
 
@@ -74,21 +74,21 @@ function setMarkers(rentalCarList) {
         desc.className = 'desc';
         var ellipsis = document.createElement('div');
         ellipsis.className = 'ellipsis';
-        ellipsis.appendChild(document.createTextNode(rentalCar.address))
+        ellipsis.appendChild(document.createTextNode(content.address))
         desc.appendChild(ellipsis);
 
         var tel = document.createElement('div');
         tel.className = 'tel ellipsis';
-        tel.appendChild(document.createTextNode(rentalCar.tel))
+        tel.appendChild(document.createTextNode(content.tel))
         desc.appendChild(tel);
 
         var a = document.createElement('a');
         a.className = 'link stretched-link';
         a.appendChild(document.createTextNode('상세정보/리뷰보기'))
         a.setAttribute('data-toggle', 'modal')
-        a.setAttribute('data-target', '#rentalCar-detail')
+        a.setAttribute('data-target', '#content-detail')
         a.addEventListener('click', function () {
-            document.getElementById('rentalCar-detail').setAttribute('rentalCar_id', rentalCar.id);
+            document.getElementById('content-detail').setAttribute('content_id', content.id);
         })
         desc.appendChild(document.createElement('div').appendChild(a));
 

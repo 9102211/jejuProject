@@ -1,6 +1,13 @@
 <!doctype html>
 <html lang="ko"
       xmlns:th="http://www.thymeleaf.org">
+<head>
+	<style>
+		.nav-link .text-dark:hover {
+			color: blue;
+		}
+	</style>
+</head>
 <header th:fragment="header">
 	<nav class="navbar navbar-expand navbar-light bg-light py-0 ml-1 border-bottom border-dark">
 		<div class="container">
@@ -9,10 +16,29 @@
 					<img th:src="@{/images/logo.png}" alt="logo" style="height: 80px">
 				</a>
 			</div>
+			<form class="pt-3"action="" onsubmit="" style="margin-right:100px;">
+				<div class="p-1 bg-light rounded rounded-pill shadow-sm">
+					<div class="input-group align-self-center">
+						<input type="search" placeholder="검색" name="keyword" id="keyword" aria-describedby="button-addon1" class="form-control border-0 bg-light">
+						<div class="input-group-append">
+							<button id="button-addon1" type="submit" class="btn btn-link text-primary font-weight-bold"><i class="bi bi-search"></i></button>
+						</div>
+					</div>
+				</div>
+			</form>
 			<div class="navbar-nav">
 				<ul class="navbar-nav me-auto mb-2 mb-xl-0">
 					<li class="nav-item mx-1">
-						<a class="nav-link text-dark h4" href="/rental-car">렌트카 목록</a>
+						<a class="nav-link text-secondary h4 test" href="/tour">관광지</a>
+					</li>
+					<li class="nav-item mx-1">
+						<a class="nav-link text-dark h4" href="/food">음식점</a>
+					</li>
+					<li class="nav-item mx-1">
+						<a class="nav-link text-dark h4" href="/stay">숙박</a>
+					</li>
+					<li class="nav-item mx-1">
+						<a class="nav-link text-dark h4" href="/rental-car">렌트카</a>
 					</li>
 					<li class="nav-item mx-1">
 						<a class="nav-link text-dark h4" href="/bigdata/realtime-map">제주 빅데이터</a>

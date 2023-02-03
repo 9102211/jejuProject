@@ -96,5 +96,6 @@ public class RentalCarRepositoryImpl implements RentalCarRepositoryCustom{
         orders.add(new OrderSpecifier(Order.ASC, rentalCar.name));
 
         return orders;
+
     }
 }
