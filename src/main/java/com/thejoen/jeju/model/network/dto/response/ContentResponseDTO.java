@@ -1,12 +1,12 @@
 package com.thejoen.jeju.model.network.dto.response;
 
 import com.thejoen.jeju.model.entitiy.Content;
+import com.thejoen.jeju.model.enumclass.CategoryType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor
 public class ContentResponseDTO {
     private String id;
@@ -35,7 +35,21 @@ public class ContentResponseDTO {
 
     private String category;
 
-    //public ContentResponseDTO(Long id, String title, String address, Double lat, Double)
+    public ContentResponseDTO(String id, String title, String address, String description, Double lat, Double lon, String tel, String image, String tag, Double naverScore, Double kakaoScore, Double googleScore, CategoryType category) {
+        this.id = id;
+        this.title = title;
+        this.address = address.replace("제주특별자치도 ", "");
+        this.description = description;
+        this.lat = lat;
+        this.lon = lon;
+        this.tel = tel;
+        this.image = image == null ? "/images/car.png" : image;
+        this.tag = tag;
+        this.naverScore = naverScore;
+        this.kakaoScore = kakaoScore;
+        this.googleScore = googleScore;
+        this.category = category.getTitle();
+    }
 
     public ContentResponseDTO(Content content) {
         this.id = content.getId();
@@ -50,7 +64,7 @@ public class ContentResponseDTO {
         this.naverScore = content.getNaverScore();
         this.kakaoScore = content.getKakaoScore();
         this.googleScore = content.getGoogleScore();
-        this.category = content.getCategory();
+        this.category = content.getCategory().getTitle();
 
     }
 }

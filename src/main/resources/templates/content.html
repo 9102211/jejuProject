@@ -15,9 +15,9 @@
         <div class="row no-gutters flex-md-row mb-4 shadow-sm h-md-250 position-relative">
             <div class="col-4 p-4 d-flex flex-column position-static bg-light">
                 <div class="justify-content-between d-flex py-3">
-                    <div>
-                        <span id="showPage" aria-live="polite" style="color: #A3DAFA">{{totalElements}}</span>
-                        <span>개의 결과가 있습니다.</span>
+                    <div id="showPage">
+                        <span aria-live="polite" style="color: #3ca4f3">{{totalElements}}</span>
+                        <span>개의 {{categoryType}} 결과가 있습니다.</span>
                     </div>
                     <div id="searchCondition">
 <!--                    <select id="sort" v-on:change="changeSort()">-->
@@ -35,7 +35,7 @@
                             <div class="d-flex">
                                 <div>
                                     <a class="stretched-link" href="javascript:;" v-on:click="showMarker(content.id)">
-                                        <img style="width: 190px; height: 140px" src="/images/car.png" alt="사진이해효" >
+                                        <img style="width: 190px; height: 140px" v-bind:src="content.image" alt="사진이해효" >
                                     </a>
                                 </div>
                                 <div class="w-100 ml-3 py-3 d-flex align-items-center">
@@ -78,34 +78,35 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">렌트카 업체 정보</h5>
+                    <h5 class="modal-title">세부 정보</h5>
                 </div>
                 <div class="modal-body px-0">
                     <div class="justify-content-center d-flex py-3">
-                        <img alt="" style="width: 500px; height: 400px;">
+                        <img alt="" v-bind:src="content.image" style="width: 500px; height: 400px;">
                     </div>
                     <div class="justify-content-center d-flex my-1">
                         <div class="justify-content-between d-flex" style="width: 500px;">
-                            <span class="h3">{{content.name}}</span>
+                            <p class="h3">{{content.title}}</p>
+                        </div>
+                    </div>
+                    <div class="justify-content-center d-flex my-1">
+                        <div class="justify-content-between d-flex" style="width: 500px;">
+                            <p>{{content.description}}</p>
                         </div>
                     </div>
                     <div class="justify-content-center d-flex my-1">
                         <div style="width: 500px;">
                             <div>
-<!--                                <span class="pr-1" style="cursor: pointer;" v-on:click="showContent()">세부 정보</span>-->
-<!--                                <span class="pl-1" style="cursor: pointer;" v-on:click="showReview()">종합 후기</span>-->
+                                <span class="pr-1" style="cursor: pointer;" v-on:click="showContent()">세부 정보</span>
+                                <span class="pl-1"  style="cursor: pointer;" v-on:click="showReview()">종합 후기</span>
                             </div>
                             <div class="border-top py-2">
-<!--                                <div v-show="contentIsClicked">-->
-<!--                                    <p><i class="bi bi-geo-alt-fill"></i> {{content.address}}</p>-->
-<!--                                    <p><i class="bi bi-clock"></i> {{content.openTime}} ~ {{content.closeTime}}</p>-->
-<!--                                    <p><i class="bi bi-car-front-fill"></i> 보유 차량 수 : {{content.numberOfTotalVehicles}}</p>-->
-<!--                                    <p>승용차 수 : {{content.numberOfVehicles}}</p>-->
-<!--                                    <p>전기차 수 : {{content.numberOfElectricVehicles}}</p>-->
-<!--                                    <p>승합차 수 : {{content.numberOfVans}}</p>-->
-<!--                                    <p><i class="bi bi-telephone"></i> 전화번호 : {{content.tel}}</p>-->
-<!--                                    <p><i class="bi bi-window"></i> 홈페이지 : <a v-bind:href="content.homePage" target="_blank">{{content.homePage}}</a></p>-->
-<!--                                </div>-->
+                                <div v-show="contentIsClicked">
+                                    <p><i class="bi bi-geo-alt-fill"></i> 도로명주소 : {{content.address}}</p>
+                                    <p><i class="bi bi-clock"></i> 오픈시간 : {{content.openTime}} ~ {{content.closeTime}}</p>
+                                    <p><i class="bi bi-telephone"></i> 전화번호 : {{content.tel}}</p>
+                                    <p><i class="bi bi-window"></i> 홈페이지 : <a v-bind:href="content.homePage" target="_blank">{{content.homePage}}</a></p>
+                                </div>
 <!--                                <div>-->
 <!--                                    <div class="justify-content-end d-flex">-->
 <!--                                        <div id="type" class="form-check form-check-inline">-->

@@ -56,7 +56,8 @@
     var showPage = new Vue({
         el : '#showPage',
         data : {
-            totalElements : {}
+            totalElements : {},
+            categoryType : {}
         }
     });
 
@@ -125,10 +126,11 @@
 
             //전체 페이지
             showPage.totalElements = pagination.totalElements;
-            showPage.currentPage = pagination.currentPage+1;
-            // 검색 데이터
+            showPage.categoryType = response.data[0].category;
 
+            // 검색 데이터
             contentList.contentList = response.data;
+
 
             //마커 그리기
             markers = new Array(response.data.length);
@@ -195,7 +197,7 @@
     $('#content-detail').on('show.bs.modal', function (event) {
         var contentId = $('#content-detail').attr('content_id');
         setDetail(contentId);
-        setReview(0);
+//        setReview(0);
         content.showContent();
     })
 

@@ -16,8 +16,8 @@
             <div class="col-4 p-4 d-flex flex-column position-static bg-light">
                 <div class="justify-content-between d-flex py-3">
                     <div>
-                        <span id="showPage" aria-live="polite" style="color: #A3DAFA">{{totalElements}}</span>
-                        <span>개의 결과가 있습니다.</span>
+                        <span id="showPage" aria-live="polite" style="color: #3ca4f3">{{totalElements}}</span>
+                        <span>개의 렌트카 결과가 있습니다.</span>
                     </div>
                     <div id="searchCondition">
                         <div class="form-check form-check-inline">
@@ -101,7 +101,7 @@
                     </div>
                     <div class="justify-content-center d-flex my-1">
                         <div style="width: 500px;">
-                            <div>
+                            <div class="justify-content-between d-flex">
                                 <span class="pr-1" style="cursor: pointer;" v-on:click="showContent()">세부 정보</span>
                                 <span class="pl-1" style="cursor: pointer;" v-on:click="showReview()">종합 후기</span>
                             </div>

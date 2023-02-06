@@ -9,7 +9,7 @@
 .info .desc {position: relative;margin: auto;height: 75px; text-align:center; }
 .desc .detail-btn {padding: 7px 15px 7px 15px; width:90%; margin-top:10px;}
 .info:after {content: '';position: absolute;margin-left: -12px;left: 50%;bottom: 0;width: 22px;height: 12px;background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png')}
-.info .link {color: #5085BB;}
+.info .link {color: #3D98FF;}
 
 .page-link {
     color: #000;
@@ -18,20 +18,20 @@
 }
 
 .btn-primary {
-    background-color: #7dc2ef;
-    border-color: #7dc2ef;
+    background-color: #3ca4f3;
+    border-color: #3ca4f3;
 }
 
 .btn-primary:hover{
-    background-color:#98c5df;
-    border-color: #98c5df;
+    background-color:#3ca4f3;
+    border-color: #3ca4f3;
 }
 
 .page-item.active .page-link {
     z-index: 1;
     color: white;
     font-weight:bold;
-    background-color: #A3DAFA;
+    background-color: #3ca4f3;
     border-color: #ccc;
 
 }

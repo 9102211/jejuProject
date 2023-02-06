@@ -12,6 +12,7 @@ public class PaginationDTO<T> {
 
     private Pagination pagination;
 
+
     public PaginationDTO (Page<T> page) {
         this.data = page.getContent();
         this.pagination = Pagination.builder()
