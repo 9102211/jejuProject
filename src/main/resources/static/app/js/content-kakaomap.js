@@ -48,8 +48,12 @@ function setMarkers(contentList) {
 
         var title = document.createElement('div');
         title.className = 'title';
-        title.appendChild(document.createTextNode(content.title));
         info.appendChild(title);
+
+        var img = document.createElement('img');
+        img.src = content.image;
+        img.style = 'width:100%; height:100%';
+        title.appendChild(img);
 
         var close = document.createElement('div');
         close.className = 'close';
@@ -62,35 +66,18 @@ function setMarkers(contentList) {
         body.className = 'body';
         info.appendChild(body);
 
-        var imgDiv = document.createElement('div');
-        imgDiv.className = 'img';
-        body.appendChild(imgDiv);
-        var img = document.createElement('img');
-        img.src = content.image;
-        img.style = 'width:73px; height:70px';
-        imgDiv.appendChild(img);
-
         var desc = document.createElement('div');
         desc.className = 'desc';
-        var ellipsis = document.createElement('div');
-        ellipsis.className = 'ellipsis';
-        ellipsis.appendChild(document.createTextNode(content.address))
-        desc.appendChild(ellipsis);
 
-        var tel = document.createElement('div');
-        tel.className = 'tel ellipsis';
-        tel.appendChild(document.createTextNode(content.tel))
-        desc.appendChild(tel);
-
-        var a = document.createElement('a');
-        a.className = 'link stretched-link';
-        a.appendChild(document.createTextNode('상세정보/리뷰보기'))
-        a.setAttribute('data-toggle', 'modal')
-        a.setAttribute('data-target', '#content-detail')
-        a.addEventListener('click', function () {
+        var detailBtn = document.createElement('button');
+        detailBtn.className = 'detail-btn link stretched-link btn btn-light';
+        detailBtn.appendChild(document.createTextNode(content.title + ' 보기'))
+        detailBtn.setAttribute('data-toggle', 'modal')
+        detailBtn.setAttribute('data-target', '#content-detail')
+        detailBtn.addEventListener('click', function () {
             document.getElementById('content-detail').setAttribute('content_id', content.id);
         })
-        desc.appendChild(document.createElement('div').appendChild(a));
+        desc.appendChild(document.createElement('div').appendChild(detailBtn));
 
         body.appendChild(desc);
 

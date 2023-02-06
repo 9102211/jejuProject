@@ -33,7 +33,7 @@ public class PageController {
         return "dashboard";
     }
 
-    @GetMapping(value = {"/tour", "/food", "/stay"})
+    @GetMapping(value = {"/tour", "/food", "/stay", "/shopping"})
     public String content() { return "content"; }
 
 }
