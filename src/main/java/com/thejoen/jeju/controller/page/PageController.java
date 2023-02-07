@@ -36,4 +36,6 @@ public class PageController {
     @GetMapping(value = {"/tour", "/food", "/stay", "/shopping"})
     public String content() { return "content"; }
 
+    @GetMapping("/search")
+    public String search() {return "search";}
 }

@@ -8,9 +8,11 @@ import lombok.Setter;
 public class ContentSearchRequestDTO {
 
     private CategoryType category;
+    private String keyword;
 
 
     public void setCategory(String category) {
         this.category = CategoryType.valueOf(category.toUpperCase());
     }
+    public void setKeyword(String keyword) { this.keyword = keyword;}
 }

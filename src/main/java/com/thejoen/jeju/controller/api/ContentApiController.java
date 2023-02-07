@@ -28,4 +28,5 @@ public class ContentApiController {
     public ResponseEntity<PaginationDTO<ContentResponseDTO>> search(@ModelAttribute ContentSearchRequestDTO request, @PageableDefault(size = 5) Pageable pageable) {
         return contentService.search(request, pageable);
     }
+
 }

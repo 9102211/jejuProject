@@ -1,8 +1,11 @@
 package com.thejoen.jeju.repository;
 
+import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.thejoen.jeju.model.entitiy.Content;
@@ -11,6 +14,8 @@ import com.thejoen.jeju.model.entitiy.RentalCar;
 import com.thejoen.jeju.model.network.dto.request.ContentSearchRequestDTO;
 import com.thejoen.jeju.model.network.dto.response.ContentResponseDTO;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
+import org.codehaus.groovy.util.StringUtil;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -29,7 +34,7 @@ public class ContentRepositoryImpl implements ContentRepositoryCustom{
 
     @Override
     public Page<ContentResponseDTO> search(ContentSearchRequestDTO request, Pageable pageable) {
-        List<OrderSpecifier> ORDERS = getOrderSpecifier(pageable.getSort());
+        List<OrderSpecifier> ORDERS = getOrderSpecifier(pageable.getSort(), request.getKeyword());
 
         List<ContentResponseDTO> contents = queryFactory
                 .select(Projections.constructor(ContentResponseDTO.class,
@@ -43,7 +48,8 @@ public class ContentRepositoryImpl implements ContentRepositoryCustom{
                         ))
                 .from(content)
                 .where(
-                        content.category.eq(request.getCategory())
+                        content.category.eq(request.getCategory()),
+                        titleOrDescOrTagContains(request.getKeyword())
                 )
                 .orderBy(ORDERS.stream().toArray(OrderSpecifier[]::new))
                 .offset(pageable.getOffset())
@@ -52,12 +58,13 @@ public class ContentRepositoryImpl implements ContentRepositoryCustom{
         JPQLQuery<Content> countQuery = queryFactory
                 .selectFrom(content)
                 .where(
-                        content.category.eq(request.getCategory())
+                        content.category.eq(request.getCategory()),
+                        titleOrDescOrTagContains(request.getKeyword())
                 );
         return PageableExecutionUtils.getPage(contents, pageable, countQuery::fetchCount);
     }
 
-    private List<OrderSpecifier> getOrderSpecifier(Sort sort) {
+    private List<OrderSpecifier> getOrderSpecifier(Sort sort, String keyword) {
 
         List<OrderSpecifier> orders = new ArrayList<>();
 
@@ -67,6 +74,11 @@ public class ContentRepositoryImpl implements ContentRepositoryCustom{
                 Order direction = order.getDirection().isAscending() ? Order.ASC : Order.DESC;
 
                 switch (order.getProperty()) {
+                    case "search" :
+                        Expression<String> pattern = Expressions.stringTemplate("{0}", keyword);
+                        orders.add(new OrderSpecifier(direction, Expressions.numberTemplate(Long.class, "regexp_count({0}, {1})", content.title, pattern)));
+                        orders.add(new OrderSpecifier(direction, Expressions.numberTemplate(Long.class, "regexp_count({0}, {1})", content.description, pattern)));
+                        break;
                     case "naverScore" :
                         orders.add(new OrderSpecifier(direction, content.naverScore));
                         break;
@@ -82,6 +94,14 @@ public class ContentRepositoryImpl implements ContentRepositoryCustom{
         orders.add(new OrderSpecifier(Order.ASC, content.title));
 
         return orders;
+
+    }
+
+    private BooleanExpression titleOrDescOrTagContains(String keyword) {
+
+        System.out.println(keyword);
+
+        return StringUtils.isNotBlank(keyword) ? content.title.contains(keyword).or(content.description.contains(keyword).or(content.tag.contains(keyword))) : null;
 
     }
 }

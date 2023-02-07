@@ -1,7 +1,8 @@
 (function ($) {
-    var category = window.location.pathname.replace('/', '');
     var maxBtnSize = 5;              // 검색 하단 최대 범위
     var indexBtn = [];               // 인덱스 버튼
+    var category = window.location.pathname.replace('/', '');
+    var keyword = '';
     var sort = '';
 
     // 페이징 처리 데이터
@@ -101,13 +102,35 @@
         el : '#searchCondition',
         methods: {
             changeSort: function () {
-                sort = $('#sort').val() + ',desc';
+                if($('#sort').val() !== 'name') {
+                    sort = $('#sort').val() + ',desc';
+                }
                 searchStart(0)
             }
         }
     })
 
     $(document).ready(function () {
+        var url = new URL(window.location.href)
+
+        var urlParams = url.searchParams;
+
+        if(urlParams.get('keyword') !== null) {
+            keyword = urlParams.get('keyword');
+        }
+
+        if(category === 'food') {
+            showPage.categoryType = '음식점';
+        }else if(category === 'tour') {
+            showPage.categoryType = '관광지';
+        }else if(category === 'stay') {
+            showPage.categoryType = '숙박';
+        }else if(category === 'shopping') {
+            showPage.categoryType = '쇼핑';
+        }
+
+        showPage.categoryType;
+
         searchStart(0)
     });
 
@@ -118,7 +141,15 @@
             currentOverlay.setMap(null)
         }
 
-        $.get("/api/v1/content?category="+category+"&page="+index+"&sort="+sort, function (response) {
+        var url = "/api/v1/content?category="+category+"&page="+index+"&sort="+sort;
+
+            console.log(keyword);
+
+        if(keyword !== '') {
+            url +="&keyword="+keyword+"&sort=search,desc";
+        }
+
+        $.get(url, function (response) {
             /* 데이터 셋팅 */
             // 페이징 처리 데이터
             indexBtn = [];
@@ -126,7 +157,6 @@
 
             //전체 페이지
             showPage.totalElements = pagination.totalElements;
-            showPage.categoryType = response.data[0].category;
 
             // 검색 데이터
             contentList.contentList = response.data;
