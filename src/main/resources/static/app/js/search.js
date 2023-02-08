@@ -1,5 +1,49 @@
 (function ($) {
-    var categoryList = ['tour', 'food', 'stay', 'shopping']
+
+    var contentId;
+
+    var categoryList = ['tour', 'food', 'stay', 'shopping', 'rentalcar']
+
+    var reviewPagination = {
+        totalPages : 0,            // 전체 페이지수
+        totalElements : 0,         // 전체 데이터수
+        currentPage :  0,          // 현재 페이지수
+        currentElements : 0        // 현재 데이터수
+    }
+
+    var content = new Vue({
+        el : '#content-detail',
+        data : {
+            content : {},
+            reviewList : {},
+            contentIsClicked : true,
+            reviewIsClicked : false
+        },
+        methods: {
+            showContent : function() {
+                if(!this.contentIsClicked) {
+                    this.contentIsClicked = true
+                    this.reviewIsClicked = false
+                }
+            },
+
+            showReview : function() {
+                if(!this.reviewIsClicked) {
+                    this.reviewIsClicked = true
+                    this.contentIsClicked = false
+                }
+            },
+            showMore : function() {
+                index = reviewPagination.currentPage + 1;
+                setReview(index);
+            },
+
+            changeCondition : function () {
+                setReview(0);
+            }
+        }
+    })
+
 
     var searchResult = new Vue({
         el : "#searchResult",
@@ -20,8 +64,8 @@
                 location.href = '/tour?keyword='+searchResult.keyword
             },
 
-            showDetail : function(id) {
-                console.log('오름')
+            setContentId : function(id) {
+                contentId = id;
             }
         }
     });
@@ -35,6 +79,9 @@
         methods : {
             toMoreResults : function(){
                 location.href = '/food?keyword='+searchResult.keyword
+            },
+            setContentId : function(id) {
+                contentId = id;
             }
         }
     });
@@ -48,6 +95,9 @@
         methods : {
             toMoreResults : function(){
                 location.href = '/stay?keyword='+searchResult.keyword
+            },
+            setContentId : function(id) {
+                contentId = id;
             }
         }
     });
@@ -61,11 +111,30 @@
         methods : {
             toMoreResults : function(){
                 location.href = '/shopping?keyword='+searchResult.keyword
+            },
+            setContentId : function(id) {
+                contentId = id;
             }
         }
     });
 
-    var categoryMap = {'tour' : tour, 'food' : food, 'stay' : stay, 'shopping' : shopping};
+    var rentalcar = new Vue({
+        el : '#rentalcar',
+        data : {
+            totalElements : {},
+            contentList : {}
+        },
+        methods : {
+            toMoreResults : function(){
+                location.href = '/rentalcar?keyword='+searchResult.keyword
+            },
+            setContentId : function(id) {
+                contentId = id;
+            }
+        }
+    });
+
+    var categoryMap = {'tour' : tour, 'food' : food, 'stay' : stay, 'shopping' : shopping, 'rentalcar' : rentalcar};
 
     $(document).ready(function () {
         var url = new URL(window.location.href)
@@ -89,10 +158,41 @@
         })
     };
 
-    function setDetail(id) {
-        $.get("/api/v1/content/" + id, function (response) {
+    function setDetail() {
+        $.get("/api/v1/content/" + contentId, function (response) {
             content.content = response;
         });
     }
 
+
+    function setReview(index) {
+        var checked = $('#type').find("input[type='checkbox']:checked");
+        var type = [];
+
+        for(var i=0; i<checked.length; i++) {
+            type.push(checked[i].value);
+        }
+        $.get("/api/v1/review?page=" + index + "&contentId=" + contentId + "&type=" + type, function (response) {
+
+            if(index === 0) {
+                content.reviewList = response.data;
+            }else {
+                content.reviewList = content.reviewList.concat(response.data);
+            }
+
+            reviewPagination = response.pagination;
+        })
+    }
+
+    $('#content-detail').on('show.bs.modal', function (event) {
+        setDetail(contentId);
+        setReview(0);
+        content.showContent();
+    })
+
+    $('.modal').on('hidden.bs.modal', function (e) {
+        $('naver').prop('checked', true);
+        $('kakao').prop('checked', true);
+        $('google').prop('checked', true);
+    });
 })(jQuery);

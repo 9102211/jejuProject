@@ -18,10 +18,6 @@ public class PageController {
         return "index";
     }
 
-    @GetMapping("/rental-car")
-    public String rentalCar() {
-        return "rental-car";
-    }
 
     @GetMapping("/bigdata/realtime-map")
     public String realTimeMap() {
@@ -33,7 +29,7 @@ public class PageController {
         return "dashboard";
     }
 
-    @GetMapping(value = {"/tour", "/food", "/stay", "/shopping"})
+    @GetMapping(value = {"/tour", "/food", "/stay", "/shopping", "/rentalcar"})
     public String content() { return "content"; }
 
     @GetMapping("/search")

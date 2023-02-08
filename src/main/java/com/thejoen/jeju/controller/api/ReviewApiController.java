@@ -24,6 +24,7 @@ public class ReviewApiController {
 
     @GetMapping("/review")
     public ResponseEntity<PaginationDTO<ReviewResponseDTO>> search(@ModelAttribute ReviewSearchRequestDTO request, @PageableDefault Pageable pageable) {
+        System.out.println(request.getContentId());
         return reviewService.search(request, pageable);
     }
 }

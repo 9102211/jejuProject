@@ -42,7 +42,8 @@ public class ContentRepositoryImpl implements ContentRepositoryCustom{
                         content.address, content.description,
                         content.lat, content.lon,
                         content.tel, content.image,
-                        content.tag, content.naverScore,
+                        content.tag, content.homepage,
+                        content.openTime, content.naverScore,
                         content.kakaoScore, content.googleScore,
                         content.category
                         ))

@@ -48,7 +48,4 @@ public class RentalCar {
     private Double kakaoScore;
 
     private Double googleScore;
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "rentalCar")
-    private List<Review> reviewList;
 }

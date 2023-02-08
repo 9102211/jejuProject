@@ -16,7 +16,7 @@
 					<img th:src="@{/images/logo.png}" alt="logo" style="height: 80px">
 				</a>
 			</div>
-			<form class="pt-3"action="/search" onsubmit="" style="margin-right:100px;">
+			<form class="pt-3"action="/search" onsubmit="return searchCheck()" style="margin-right:100px;">
 				<div class="p-1 bg-light rounded rounded-pill shadow-sm">
 					<div class="input-group align-self-center">
 						<input type="search" placeholder="검색" name="keyword" id="keyword" aria-describedby="button-addon1" class="form-control border-0 bg-light">
@@ -41,7 +41,7 @@
 						<a class="nav-link text-dark h4" href="/shopping">쇼핑</a>
 					</li>
 					<li class="nav-item mx-1">
-						<a class="nav-link text-dark h4" href="/rental-car">렌트카</a>
+						<a class="nav-link text-dark h4" href="/rentalcar">렌트카</a>
 					</li>
 					<li class="nav-item mx-1">
 						<a class="nav-link text-dark h4" href="/bigdata/realtime-map">제주 빅데이터</a>

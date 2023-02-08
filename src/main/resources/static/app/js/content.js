@@ -13,12 +13,12 @@
         currentElements : 0        // 현재 데이터수
     };
 
-//    var reviewPagination = {
-//        totalPages : 0,            // 전체 페이지수
-//        totalElements : 0,         // 전체 데이터수
-//        currentPage :  0,          // 현재 페이지수
-//        currentElements : 0        // 현재 데이터수
-//    }
+    var reviewPagination = {
+        totalPages : 0,            // 전체 페이지수
+        totalElements : 0,         // 전체 데이터수
+        currentPage :  0,          // 현재 페이지수
+        currentElements : 0        // 현재 데이터수
+    }
 
     var content = new Vue({
         el : '#content-detail',
@@ -58,7 +58,8 @@
         el : '#showPage',
         data : {
             totalElements : {},
-            categoryType : {}
+            categoryType : {},
+            keyword : ''
         }
     });
 
@@ -117,6 +118,7 @@
 
         if(urlParams.get('keyword') !== null) {
             keyword = urlParams.get('keyword');
+            showPage.keyword = keyword;
         }
 
         if(category === 'food') {
@@ -127,9 +129,9 @@
             showPage.categoryType = '숙박';
         }else if(category === 'shopping') {
             showPage.categoryType = '쇼핑';
+        }else if(category === 'rentalcar') {
+            showPage.categoryType = '렌트카';
         }
-
-        showPage.categoryType;
 
         searchStart(0)
     });
@@ -142,8 +144,6 @@
         }
 
         var url = "/api/v1/content?category="+category+"&page="+index+"&sort="+sort;
-
-            console.log(keyword);
 
         if(keyword !== '') {
             url +="&keyword="+keyword+"&sort=search,desc";
@@ -204,30 +204,30 @@
         });
     }
 
-//    function setReview(index) {
-//        var contentId = $('#content-detail').attr('content_id');
-//        var checked = $('#type').find("input[type='checkbox']:checked");
-//        var type = [];
-//
-//        for(var i=0; i<checked.length; i++) {
-//            type.push(checked[i].value);
-//        }
-//        $.get("/api/v1/review?page=" + index + "&contentId=" + contentId + "&type=" + type, function (response) {
-//
-//            if(index === 0) {
-//                content.reviewList = response.data;
-//            }else {
-//                content.reviewList = content.reviewList.concat(response.data);
-//            }
-//
-//            reviewPagination = response.pagination;
-//        })
-//    }
+    function setReview(index) {
+        var contentId = $('#content-detail').attr('content_id');
+        var checked = $('#type').find("input[type='checkbox']:checked");
+        var type = [];
+
+        for(var i=0; i<checked.length; i++) {
+            type.push(checked[i].value);
+        }
+        $.get("/api/v1/review?page=" + index + "&contentId=" + contentId + "&type=" + type, function (response) {
+
+            if(index === 0) {
+                content.reviewList = response.data;
+            }else {
+                content.reviewList = content.reviewList.concat(response.data);
+            }
+
+            reviewPagination = response.pagination;
+        })
+    }
 
     $('#content-detail').on('show.bs.modal', function (event) {
         var contentId = $('#content-detail').attr('content_id');
         setDetail(contentId);
-//        setReview(0);
+        setReview(0);
         content.showContent();
     })
 

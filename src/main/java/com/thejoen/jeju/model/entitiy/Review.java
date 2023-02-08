@@ -21,7 +21,7 @@ public class Review {
     private String writer;
 
     @Column(columnDefinition = "TEXT")
-    private String content;
+    private String detail;
 
     @Enumerated(EnumType.STRING)
     private ReviewType type;
@@ -31,5 +31,5 @@ public class Review {
     private LocalDateTime createdAt;
 
     @ManyToOne
-    private RentalCar rentalCar;
+    private Content content;
 }

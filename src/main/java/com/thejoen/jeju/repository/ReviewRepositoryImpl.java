@@ -32,13 +32,13 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom{
         List<ReviewResponseDTO> content = queryFactory
                 .select(Projections.constructor(ReviewResponseDTO.class,
                         review.id,
-                        review.writer, review.content,
+                        review.writer, review.detail,
                         review.type, review.score,
                         review.createdAt
                 ))
                 .from(review)
                 .where(
-                        review.rentalCar.id.eq(request.getRentalCarId()),
+                        review.content.id.eq(request.getContentId()),
                         typeEq(request.getType())
                 )
                 .orderBy(review.createdAt.desc().nullsLast())
@@ -49,7 +49,7 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom{
         JPQLQuery<Review> countQuery = queryFactory
                 .selectFrom(review)
                 .where(
-                        review.rentalCar.id.eq(request.getRentalCarId()),
+                        review.content.id.eq(request.getContentId()),
                         typeEq(request.getType())
                 );
 

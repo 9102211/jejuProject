@@ -5,10 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -35,13 +33,19 @@ public class Content {
 
     private String tag;
 
+    private String homepage;
+
+    private String openTime;
+
     private Double naverScore;
 
     private Double kakaoScore;
 
     private Double googleScore;
 
-
     @Enumerated(EnumType.STRING)
     private CategoryType category;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "content")
+    private List<Review> reviewList;
 }

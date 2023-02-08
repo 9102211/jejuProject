@@ -20,7 +20,7 @@ public class ReviewResponseDTO {
 
     private String writer;
 
-    private String content;
+    private String detail;
 
     private String type;
 
@@ -28,10 +28,10 @@ public class ReviewResponseDTO {
 
     private String createdAt;
 
-    public ReviewResponseDTO(Long id, String writer, String content, ReviewType type, Double score, LocalDateTime createdAt) {
+    public ReviewResponseDTO(Long id, String writer, String detail, ReviewType type, Double score, LocalDateTime createdAt) {
         this.id = id;
         this.writer = writer;
-        this.content = content;
+        this.detail = detail;
         this.type = type.getTitle();
         this.score = score;
         this.createdAt = createdAt != null ? createdAt.format(DateTimeFormatter.ofPattern("yy/MM/dd")) : null;

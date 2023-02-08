@@ -27,6 +27,10 @@ public class ContentResponseDTO {
 
     private String tag;
 
+    private String homepage;
+
+    private String openTime;
+
     private Double naverScore;
 
     private Double kakaoScore;
@@ -35,7 +39,7 @@ public class ContentResponseDTO {
 
     private String category;
 
-    public ContentResponseDTO(String id, String title, String address, String description, Double lat, Double lon, String tel, String image, String tag, Double naverScore, Double kakaoScore, Double googleScore, CategoryType category) {
+    public ContentResponseDTO(String id, String title, String address, String description, Double lat, Double lon, String tel, String image, String tag, String homepage, String openTime, Double naverScore, Double kakaoScore, Double googleScore, CategoryType category) {
         this.id = id;
         this.title = title;
         this.address = address.replace("제주특별자치도 ", "");
@@ -45,6 +49,8 @@ public class ContentResponseDTO {
         this.tel = tel;
         this.image = image == null ? "/images/car.png" : image;
         this.tag = tag;
+        this.homepage = homepage;
+        this.openTime = openTime;
         this.naverScore = naverScore;
         this.kakaoScore = kakaoScore;
         this.googleScore = googleScore;
@@ -59,8 +65,10 @@ public class ContentResponseDTO {
         this.lat = content.getLat();
         this.lon = content.getLon();
         this.tel = content.getTel();
-        this.image = content.getImage();
+        this.image = content.getImage() == null ? "/images/car.png" : content.getImage();;
         this.tag = content.getTag();
+        this.homepage = content.getHomepage();
+        this.openTime = content.getOpenTime();
         this.naverScore = content.getNaverScore();
         this.kakaoScore = content.getKakaoScore();
         this.googleScore = content.getGoogleScore();

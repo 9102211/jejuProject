@@ -10,7 +10,7 @@ import java.util.List;
 @Setter
 public class ReviewSearchRequestDTO {
 
-    private Long rentalCarId;
+    private String contentId;
 
     private List<ReviewType> type;
 }

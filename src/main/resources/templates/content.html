@@ -18,6 +18,7 @@
                     <div id="showPage">
                         <span aria-live="polite" style="color: #3ca4f3">{{totalElements}}</span>
                         <span>개의 {{categoryType}} 결과가 있습니다.</span>
+                        <span style="font-size: 14px; color: #3ca4f3;" v-if="keyword != null && keyword !== ''">(검색어: {{keyword}})</span>
                     </div>
                     <div id="searchCondition">
 <!--                    <select id="sort" v-on:change="changeSort()">-->
@@ -43,9 +44,9 @@
                                         <p class="text-left h4" style="word-wrap:break-word;">{{content.title}}</p>
                                         <p class="text-left text-muted mb-1"> {{content.address}}</p>
                                         <div>
-<!--                                            <span v-if="content.naverScore>0"><img class="mr-2" src="/images/naver.png" alt="" style="width: 25px; height: 25px">{{content.naverScore}}/5</span>-->
-<!--                                            <span v-if="content.kakaoScore>0"><img class="mx-2" src="/images/kakao.png" alt=""  style="width: 25px; height: 25px">{{content.kakaoScore}}/5</span>-->
-<!--                                            <span v-if="content.googleScore>0"><img class="mx-2" src="/images/google.png" alt="" style="width: 25px; height: 25px">{{content.googleScore}}/5</span>-->
+                                            <span v-if="content.naverScore>0"><img class="mr-2" src="/images/naver.png" alt="" style="width: 25px; height: 25px">{{content.naverScore}}/5</span>
+                                            <span v-if="content.kakaoScore>0"><img class="mx-2" src="/images/kakao.png" alt=""  style="width: 25px; height: 25px">{{content.kakaoScore}}/5</span>
+                                            <span v-if="content.googleScore>0"><img class="mx-2" src="/images/google.png" alt="" style="width: 25px; height: 25px">{{content.googleScore}}/5</span>
                                         </div>
                                     </div>
                                 </div>
@@ -103,51 +104,51 @@
                             <div class="border-top py-2">
                                 <div v-show="contentIsClicked">
                                     <p><i class="bi bi-geo-alt-fill"></i> 도로명주소 : {{content.address}}</p>
-                                    <p><i class="bi bi-clock"></i> 오픈시간 : {{content.openTime}} ~ {{content.closeTime}}</p>
+                                    <p><i class="bi bi-clock"></i> 오픈시간 : {{content.openTime}}</p>
                                     <p><i class="bi bi-telephone"></i> 전화번호 : {{content.tel}}</p>
                                     <p><i class="bi bi-window"></i> 홈페이지 : <a v-bind:href="content.homePage" target="_blank">{{content.homePage}}</a></p>
                                 </div>
-<!--                                <div>-->
-<!--                                    <div class="justify-content-end d-flex">-->
-<!--                                        <div id="type" class="form-check form-check-inline">-->
-<!--                                                <input class="form-check-input mx-2" type="checkbox" id="naver" value="NAVER" checked v-on:change="changeCondition()">-->
-<!--                                                <label class="form-check-label" for="naver">-->
-<!--                                                    네이버-->
-<!--                                                </label>-->
-<!--                                                <input class="form-check-input mx-2" type="checkbox" id="kakao" value="KAKAO" checked v-on:change="changeCondition()">-->
-<!--                                                <label class="form-check-label" for="kakao">-->
-<!--                                                    카카오-->
-<!--                                                </label>-->
-<!--                                                <input class="form-check-input mx-2" type="checkbox" id="google" value="GOOGLE" checked v-on:change="changeCondition()">-->
-<!--                                                <label class="form-check-label" for="google">-->
-<!--                                                    구글-->
-<!--                                                </label>-->
-<!--                                        </div>-->
-<!--                                    </div>-->
-<!--                                    <ul class="list-group list-group-flush">-->
-<!--                                        <li class="list-group-item px-0" v-for="review in reviewList">-->
-<!--                                            <div>-->
-<!--                                                <span>{{review.writer}}</span>-->
-<!--                                                <span v-if="review.createdAt != null">{{review.createdAt}}</span>-->
-<!--                                                <span>{{review.type}}</span>-->
-<!--                                                <span v-if="review.score != null">⭐{{review.score}}/5</span>-->
-<!--                                            </div>-->
-<!--                                            <div>-->
-<!--                                                <p v-if="review.content != null && review.content.trim().length > 0 ">{{review.content}}</p>-->
-<!--                                                <p v-else>내용이 없습니다.</p>-->
-<!--                                            </div>-->
-<!--                                        </li>-->
-<!--                                    </ul>-->
-<!--                                    <div>-->
-<!--                                        <button class="btn btn-primary btn-block" v-on:click="showMore()">더보기</button>-->
-<!--                                    </div>-->
-<!--                                </div>-->
+                                <div v-show="reviewIsClicked">
+                                    <div class="justify-content-end d-flex">
+                                        <div id="type" class="form-check form-check-inline">
+                                                <input class="form-check-input mx-2" type="checkbox" id="naver" value="NAVER" checked v-on:change="changeCondition()">
+                                                <label class="form-check-label" for="naver">
+                                                    네이버
+                                                </label>
+                                                <input class="form-check-input mx-2" type="checkbox" id="kakao" value="KAKAO" checked v-on:change="changeCondition()">
+                                                <label class="form-check-label" for="kakao">
+                                                    카카오
+                                                </label>
+                                                <input class="form-check-input mx-2" type="checkbox" id="google" value="GOOGLE" checked v-on:change="changeCondition()">
+                                                <label class="form-check-label" for="google">
+                                                    구글
+                                                </label>
+                                        </div>
+                                    </div>
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item px-0" v-for="review in reviewList">
+                                            <div>
+                                                <span>{{review.writer}}</span>
+                                                <span v-if="review.createdAt != null">{{review.createdAt}}</span>
+                                                <span>{{review.type}}</span>
+                                                <span v-if="review.score != null">⭐{{review.score}}/5</span>
+                                            </div>
+                                            <div>
+                                                <p v-if="review.detail != null && review.detail.trim().length > 0 ">{{review.detail}}</p>
+                                                <p v-else>내용이 없습니다.</p>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <div>
+                                        <button class="btn btn-primary btn-block" v-on:click="showMore()">더보기</button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">끄기</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
                 </div>
             </div>
         </div>
