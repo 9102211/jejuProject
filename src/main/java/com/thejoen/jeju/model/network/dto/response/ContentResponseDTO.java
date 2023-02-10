@@ -47,7 +47,7 @@ public class ContentResponseDTO {
         this.lat = lat;
         this.lon = lon;
         this.tel = tel;
-        this.image = image == null ? "/images/noneimage.png" : image;
+        this.image = image;
         this.tag = tag;
         this.homepage = homepage;
         this.openTime = openTime;
@@ -65,7 +65,7 @@ public class ContentResponseDTO {
         this.lat = content.getLat();
         this.lon = content.getLon();
         this.tel = content.getTel();
-        this.image = content.getImage() == null ? "/images/noneimage.png" : content.getImage();;
+        this.image = content.getImage();
         this.tag = content.getTag();
         this.homepage = content.getHomepage();
         this.openTime = content.getOpenTime();

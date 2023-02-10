@@ -22,10 +22,11 @@
                     </div>
                     <div id="searchCondition">
                         <select id="sort" v-on:change="changeSort()">
-                            <option value="name">이름순</option>
-                            <option value="naverScore">네이버 평점순</option>
-                            <option value="kakaoScore">카카오 평점순</option>
-                            <option value="googleScore">구글 평점순</option>
+                            <option th:if="${param.keyword != null}" value="search,desc">정확도순</option>
+                            <option value="name,asc">이름순</option>
+                            <option value="naverScore,desc">네이버 평점순</option>
+                            <option value="kakaoScore,desc">카카오 평점순</option>
+                            <option value="googleScore,desc">구글 평점순</option>
                         </select>
                     </div>
                 </div>
@@ -35,7 +36,8 @@
                             <div class="d-flex">
                                 <div>
                                     <a class="stretched-link" href="javascript:;" v-on:click="showMarker(content.id)">
-                                        <img style="width: 190px; height: 140px" v-bind:src="content.image" alt="사진이해효" >
+                                        <img class="thumbnail" style="width: 190px; height: 140px" v-if="content.image != null" v-bind:src="content.image" v-bind:alt="content.title">
+                                        <img class="thumbnail" style="width: 190px; height: 140px" v-else v-bind:src="alternativeImage" v-bind:alt="content.title">
                                     </a>
                                 </div>
                                 <div class="w-100 ml-3 py-3 d-flex align-items-center">
@@ -53,7 +55,7 @@
                         </li>
                     </ul>
                 </div>
-                <div class="dataTables_paginate paging_simple_numbers mt-5" id="pageBtn">
+                <div class="dataTables_paginate paging_simple_numbers mt-4" id="pageBtn">
                     <ul class="pagination justify-content-center">
                         <li class="page-item paginate_button previous" id="previousBtn">
                             <a class="page-link" href="javascript:;" v-on:click="previousClick()">&laquo;</a>
@@ -82,7 +84,8 @@
                 </div>
                 <div class="modal-body px-0">
                     <div class="justify-content-center d-flex py-3">
-                        <img alt="" v-bind:src="content.image" style="width: 500px; height: 400px;">
+                        <img v-if="content.image != null" v-bind:alt="content.title" v-bind:src="content.image" style="width: 500px; height: 400px;">
+                        <img v-else v-bind:alt="content.title" v-bind:src="content.image" style="width: 500px; height: 400px;">
                     </div>
                     <div class="justify-content-center d-flex my-1">
                         <div class="justify-content-between d-flex" style="width: 500px;">

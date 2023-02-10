@@ -1,4 +1,9 @@
 .description {
+    position: absolute;
+    width: 520px;
+    height: 400px;
+    z-index: 100;
+    top: 120px;
     opacity: 0;
     animation: fadein 0.5s;
     -moz-animation: fadein 0.5s; /* Firefox */
@@ -6,6 +11,16 @@
     -o-animation: fadein 0.5; /* Opera */
     animation-fill-mode: forwards;
     animation-delay: 1.5s;
+}
+
+.carousel {
+    width:1920px;
+    height: 1000px;
+    overflow: hidden;
+}
+
+.main-img {
+    width:100%;
 }
 @keyframes fadein {
     from {

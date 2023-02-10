@@ -15,6 +15,7 @@
         el : '#content-detail',
         data : {
             content : {},
+            alternativeImage : '/images/noneimage.png',
             reviewList : {},
             contentIsClicked : true,
             reviewIsClicked : false
@@ -122,7 +123,8 @@
         el : '#rentalcar',
         data : {
             totalElements : {},
-            contentList : {}
+            contentList : {},
+            alternativeImage : '/images/noneimage.png'
         },
         methods : {
             toMoreResults : function(){

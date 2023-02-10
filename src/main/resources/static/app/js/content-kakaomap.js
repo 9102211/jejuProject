@@ -51,7 +51,7 @@ function setMarkers(contentList) {
         info.appendChild(title);
 
         var img = document.createElement('img');
-        img.src = content.image;
+        img.src = content.image != null ? content.image : '/images/noneimage.png';
         img.style = 'width:100%; height:100%';
         title.appendChild(img);
 

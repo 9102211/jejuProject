@@ -67,7 +67,8 @@
     var contentList = new Vue({
         el : '#contentList',
         data : {
-            contentList : {}
+            contentList : {},
+            alternativeImage : '/images/noneimage.png',
         },
         methods: {
             showMarker: function(id) {
@@ -103,9 +104,6 @@
         el : '#searchCondition',
         methods: {
             changeSort: function () {
-                if($('#sort').val() !== 'name') {
-                    sort = $('#sort').val() + ',desc';
-                }
                 searchStart(0)
             }
         }
@@ -143,10 +141,10 @@
             currentOverlay.setMap(null)
         }
 
-        var url = "/api/v1/content?category="+category+"&page="+index+"&sort="+sort;
+        var url = "/api/v1/content?category="+category+"&page="+index+"&sort="+$('#sort').val();
 
         if(keyword !== '') {
-            url +="&keyword="+keyword+"&sort=search,desc";
+            url +="&keyword="+keyword;
         }
 
         $.get(url, function (response) {
@@ -159,8 +157,7 @@
             showPage.totalElements = pagination.totalElements;
 
             // 검색 데이터
-            contentList.contentList = response.data;
-
+            contentList.contentList = response.data
 
             //마커 그리기
             markers = new Array(response.data.length);
