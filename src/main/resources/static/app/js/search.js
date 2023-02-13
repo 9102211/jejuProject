@@ -15,6 +15,7 @@
         el : '#content-detail',
         data : {
             content : {},
+            youtubeList : {},
             alternativeImage : '/images/noneimage.png',
             reviewList : {},
             contentIsClicked : true,
@@ -160,9 +161,19 @@
         })
     };
 
-    function setDetail() {
-        $.get("/api/v1/content/" + contentId, function (response) {
+   function setDetail(id) {
+        $.get("/api/v1/content/" + id, function (response) {
             content.content = response;
+
+            if(response.category === '관광지') {
+//                setYoutube(response.title)
+            }
+        });
+    }
+
+    function setYoutube(keyword) {
+        $.get("https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=2&type=video&key=AIzaSyDFUmIFYT4Jn2W0oW0f0HH9NyzpK-jJnPo&q=제주 " + keyword +"vlog", function (response){
+            content.youtubeList = response.items;
         });
     }
 

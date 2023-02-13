@@ -100,8 +100,6 @@ public class ContentRepositoryImpl implements ContentRepositoryCustom{
 
     private BooleanExpression titleOrDescOrTagContains(String keyword) {
 
-        System.out.println(keyword);
-
         return StringUtils.isNotBlank(keyword) ? content.title.contains(keyword).or(content.description.contains(keyword).or(content.tag.contains(keyword))) : null;
 
     }

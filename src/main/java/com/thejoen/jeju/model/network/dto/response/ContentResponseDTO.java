@@ -73,6 +73,5 @@ public class ContentResponseDTO {
         this.kakaoScore = content.getKakaoScore();
         this.googleScore = content.getGoogleScore();
         this.category = content.getCategory().getTitle();
-
     }
 }

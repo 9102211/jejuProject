@@ -1,3 +1,9 @@
+.title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .content {
   font-size:13px;
   overflow: hidden;
@@ -7,10 +13,19 @@
   -webkit-box-orient: vertical;
 }
 
+.youtube-title {
+  font-size:13px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  color: black;
+}
+
 .card-box {
   margin-bottom: 25px;
 }
-
 
 .card {
   height: 293px;
@@ -18,4 +33,18 @@
 
 .card img {
   cursor: pointer;
+}
+
+.youtube-card {
+    height: 190px;
+}
+
+.youtube-title {
+  font-size:13px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  color: black;
 }

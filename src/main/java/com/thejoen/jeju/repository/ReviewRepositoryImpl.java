@@ -42,6 +42,7 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom{
                         typeEq(request.getType())
                 )
                 .orderBy(review.createdAt.desc().nullsLast())
+//                .orderBy(review.detail.length().desc().nullsLast())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();

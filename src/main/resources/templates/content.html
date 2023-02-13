@@ -84,8 +84,8 @@
                 </div>
                 <div class="modal-body px-0">
                     <div class="justify-content-center d-flex py-3">
-                        <img v-if="content.image != null" v-bind:alt="content.title" v-bind:src="content.image" style="width: 500px; height: 400px;">
-                        <img v-else v-bind:alt="content.title" v-bind:src="content.image" style="width: 500px; height: 400px;">
+                        <img v-if="content.image != null" v-bind:alt="content.title" v-bind:src="content.image" style="width: 500px; height: 360px;">
+                        <img v-else v-bind:alt="content.title" v-bind:src="alternativeImage" style="width: 500px; height: 360px;">
                     </div>
                     <div class="justify-content-center d-flex my-1">
                         <div class="justify-content-between d-flex" style="width: 500px;">
@@ -105,10 +105,31 @@
                             </div>
                             <div class="border-top py-2">
                                 <div v-show="contentIsClicked">
-                                    <p><i class="bi bi-geo-alt-fill"></i> 도로명주소 : {{content.address}}</p>
-                                    <p><i class="bi bi-clock"></i> 오픈시간 : {{content.openTime}}</p>
-                                    <p><i class="bi bi-telephone"></i> 전화번호 : {{content.tel}}</p>
-                                    <p><i class="bi bi-window"></i> 홈페이지 : <a v-bind:href="content.homePage" target="_blank">{{content.homePage}}</a></p>
+                                    <div>
+                                        <p><i class="bi bi-geo-alt-fill"></i> 도로명주소 : {{content.address}}</p>
+                                        <p><i class="bi bi-clock"></i> 오픈시간 : {{content.openTime}}</p>
+                                        <p><i class="bi bi-telephone"></i> 전화번호 : {{content.tel}}</p>
+                                        <p><i class="bi bi-window"></i> 홈페이지 : <a v-bind:href="content.homePage" target="_blank">{{content.homePage}}</a></p>
+                                    </div>
+                                    <div v-if="content.category == '관광지'" class="border-top py-2">
+                                        <div><p><i class="bi bi-youtube"></i> YOUTUBE VLOG</p></div>
+                                        <div>
+                                            <div class="row">
+                                                <div class="col-6" v-for="youtube in youtubeList">
+                                                    <a v-bind:href="'https://www.youtube.com/watch?v='+youtube.id.videoId" target="_blank">
+                                                        <div class="card mb-3 shadow-sm">
+                                                            <img v-bind:src="youtube.snippet.thumbnails.medium.url" class="card-img-top" style="height:120px;">
+                                                            <div class="card-body pb-0">
+                                                                <div class="card-text">
+                                                                    <p class="youtube-title" v-html="youtube.snippet.title"></p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div v-show="reviewIsClicked">
                                     <div class="justify-content-end d-flex">
