@@ -13,27 +13,60 @@
       <div class="col-10">
         <div class="border-bottom py-2 px-3">
           <h2>DashBoard</h2>
-          <select id="year">
-            <option>2022</option>
-            <option>2021</option>
-            <option>2020</option>
-            <option>2019</option>
-            <option>2018</option>
-          </select>
-          <select id="category">
-            <option>입도수</option>
-          </select>
-          <select id="legend">
-            <option>연령별</option>
-          </select>
         </div>
-        <div class="px-5 py-5 d-flex justify-content-center border-bottom">
-          <div style="width:80%">
-            <canvas id="myChart"></canvas>
+        <div class="row w-100">
+          <div class="col-6">
+            <div class="p-3 border-bottom">
+              <div>
+                <span>조회년도</span>
+                <select id="year" >
+                  <option th:each="year : ${#numbers.sequence(2022, 2014)}" th:text="${year}"></option>
+                </select>
+              </div>
+              <div>
+                <canvas id="totalVisitorDataByYearChart"></canvas>
+              </div>
+            </div>
+            <div class="p-3 border-bottom">
+              <div>
+                <span>조회월</span>
+                <select id="month" >
+                  <option th:each="month : ${#numbers.sequence(1, 12)}" th:text="${month}"></option>
+                </select>
+              </div>
+              <div class="justify-content-around d-flex py-3">
+                <div class="border p-3 text-center flex-fill">
+                  <p>누적 방문객 수</p>
+                  <span>10,429,201</span>
+                </div>
+                <div class="border p-3 text-center flex-fill">
+                  <p>방문객 수</p>
+                  <span>10,429,201</span>
+                </div>
+                <div class="border p-3 text-center flex-fill">
+                  <p>일평균 방문객 수</p>
+                  <span>10,429,201</span>
+                </div>
+              </div>
+            </div>
+            <div class="p-3">
+              <div class="row py-3" style="height:400px">
+                <div class="col-2 p-0">
+                  <canvas id="domesticVisitorDataByMonthBarChart" style="width:100%; height:100%"></canvas>
+                </div>
+                <div class="col-5 border-right p-0">
+                  <canvas id="domesticVisitorDataByMonthPieChart" style="width:100%; height:100%"></canvas>
+                </div>
+                <div class="col-5 p-0">
+                  <canvas></canvas>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
-        <div class="px-3 my-5 d-flex justify-content-center">
-          <img id="table" style="width: 90%; min-width: 700px" src="" alt="data">
+          <div class="col-6">
+            여기는 시계열 예측 그래프입니다.
+
+          </div>
         </div>
       </div>
     </div>

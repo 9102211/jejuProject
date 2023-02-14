@@ -34,7 +34,7 @@ public class DomesticVisitorDataRepositoryImpl implements DomesticVisitorReposit
                 ))
                 .from(domesticVisitorData)
                 .where(
-                    domesticVisitorData.month.between(request.getStartDate(), request.getEndDate())
+                    domesticVisitorData.month.year().eq(request.getYear())
                 )
                 .orderBy(domesticVisitorData.month.asc())
                 .fetch();

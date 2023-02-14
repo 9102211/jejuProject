@@ -11,10 +11,5 @@ import java.time.LocalDateTime;
 @Getter
 public class DomesticVisitorDataRequestDTO {
 
-    @DateTimeFormat(pattern = "yyyyMMdd")
-    LocalDate startDate;
-
-    @DateTimeFormat(pattern = "yyyyMMdd")
-    LocalDate endDate;
-
+    Integer year;
 }
