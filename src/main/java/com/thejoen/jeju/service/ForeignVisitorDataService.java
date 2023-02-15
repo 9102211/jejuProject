@@ -26,4 +26,8 @@ public class ForeignVisitorDataService {
 
         return ResponseEntity.ok(foreignVisitorDataRepository.search(request));
     }
+
+    public  ResponseEntity<Long> findCumSumOfVisitor(String startDate, String endDate) {
+        return ResponseEntity.ok(foreignVisitorDataRepository.findCumSumOfVisitor(startDate, endDate));
+    }
 }

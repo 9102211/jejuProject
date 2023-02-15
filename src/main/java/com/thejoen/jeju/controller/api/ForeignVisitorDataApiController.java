@@ -31,4 +31,9 @@ public class ForeignVisitorDataApiController {
         return foreignVisitorDataService.search(request);
     }
 
+    @GetMapping("cumSum")
+    public ResponseEntity<Long> findCumSumOfVisitor(@RequestParam String startDate, @RequestParam String endDate){
+        return foreignVisitorDataService.findCumSumOfVisitor(startDate, endDate);
+    }
+
 }

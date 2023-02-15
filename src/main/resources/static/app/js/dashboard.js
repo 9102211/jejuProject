@@ -3,7 +3,18 @@
     var totalVisitorDataByYearChart;
     var domesticVisitorDataByMonthPieChart;
     var domesticVisitorDataByMonthBarChart;
-    var foreignVisitorDataByMonthChart;
+    var foreignVisitorDataByMonthPieChart;
+
+
+    var countOfVisitorDetail = new Vue({
+        el : "#countOfVisitorDetail",
+        data : {
+            cumSumOfVisitor : {},
+            countOfVisitor : {},
+            averageOfVisitor : {}
+        }
+    })
+
 
     $('#year').on('change', function() {
 
@@ -11,6 +22,21 @@
 
         var month = $('#month').val();
 
+        setYearData(year)
+
+        setMonthData(year, month);
+    })
+
+    $('#month').on('change', function() {
+
+        var year = $('#year').val();
+
+        var month = $('#month').val();
+
+        setMonthData(year, month);
+    })
+
+    function setYearData(year) {
         var domesticVisitorDataByYear = getDomesticVisitorDataByYear(year);
 
         var foreignVisitorDataByYear = getForeignVisitorDataByYear(year);
@@ -22,9 +48,10 @@
 
             totalVisitorDataByYear.push(sum);
         }
-
         drawTotalVisitorDataByYearChart(totalVisitorDataByYear, year)
+    }
 
+    function setMonthData(year, month) {
         var domesticVisitorDataByMonth = getDomesticVisitorDataByMonth(year, month);
 
         var domesticVisitorDataByMonthAndTravelType = [domesticVisitorDataByMonth.independentTour, domesticVisitorDataByMonth.partialPackageTour, domesticVisitorDataByMonth.packageTour]
@@ -37,27 +64,21 @@
 
         var foreignVisitorDataByMonth = getForeignVisitorDataByMonth(year, month);
 
-    })
+        drawForeignVisitorDataByMonthPieChart(foreignVisitorDataByMonth, year, month);
 
-    $('#month').on('change', function() {
+        var cumSumOfVisitor = getCumSumOfVisitor(year+'0101', year+''+month+'01');
 
-        var year = $('#year').val();
+        var countOfVisitor = domesticVisitorDataByMonth.sum + foreignVisitorDataByMonth.sum;
 
-        var month = $('#month').val();
+        var lastDate = new Date(year, month, 0);
 
-        var domesticVisitorDataByMonth = getDomesticVisitorDataByMonth(year, month);
+        var averageOfVisitor = Math.floor(countOfVisitor / lastDate.getDate());
 
-        var domesticVisitorDataByMonthAndTravelType = [domesticVisitorDataByMonth.independentTour, domesticVisitorDataByMonth.partialPackageTour, domesticVisitorDataByMonth.packageTour]
+        setCountOfVisitorDetail(cumSumOfVisitor, countOfVisitor, averageOfVisitor);
+    }
 
-        drawDomesticVisitorDataByMonthBarChart(domesticVisitorDataByMonthAndTravelType, year, month)
-
-        var domesticVisitorDataByMonthAndPurpose = [domesticVisitorDataByMonth.leisureSports, domesticVisitorDataByMonth.business, domesticVisitorDataByMonth.relaxation, domesticVisitorDataByMonth.visit, domesticVisitorDataByMonth.education, domesticVisitorDataByMonth.misc]
-
-        drawDomesticVisitorDataByMonthPieChart(domesticVisitorDataByMonthAndPurpose, year, month)
-
-        var foreignVisitorDataByMonth = getForeignVisitorDataByMonth(year, month);
-    })
-
+//======================================== 메인 바 차트 ============================================
+//
     function drawTotalVisitorDataByYearChart(data, year) {
         var ctx = document.getElementById("totalVisitorDataByYearChart").getContext("2d");
 
@@ -73,7 +94,7 @@
                 {
                     label: '방문자수',
                     data: data,
-                    backgroundColor: 'rgba(54, 162, 235, 0.7)',
+                    backgroundColor: 'rgba(54, 162, 235, 0.8)',
                     borderColor: "#3ca4f3",
                     borderWidth: 1
                 },
@@ -101,7 +122,9 @@
             }
         })
     }
-
+//
+//======================================== 여행별 바 차트 ============================================
+//
     function drawDomesticVisitorDataByMonthBarChart(data, year, month) {
             var ctx = document.getElementById("domesticVisitorDataByMonthBarChart").getContext("2d");
 
@@ -114,28 +137,31 @@
                 data: {
                     datasets: [
                     {
-                        label: '방문자수',
+                        label: '개별여행',
                         data: [data[0]],
-                        backgroundColor: '#3ca4f3'
+                        backgroundColor: '#3ca4f3',
+                        barThickness: 2
                     },
                     {
-                        label: '우짤래미',
+                        label: '패키지여행',
                         data: [data[1]],
-                        backgroundColor: '#cccccc'
+                        backgroundColor: '#E97EC4',
+                        barThickness: 2
                     },
                     {
-                        label: '저쩔래미',
+                        label: '부분패키지여행',
                         data: [data[2]],
-                        backgroundColor: '#666666'
+                        backgroundColor: '#FFB465',
+                        barThickness: 2
                     },
                     ]
                 },
                 options: {
-                    responsive:false,
+//                    responsive:false,
                     title:{
                         display:true,
-                        text: '여행별',
-                        fontSize: 12,
+                        text: '내국인 여행유형',
+                        fontSize: 18,
                         fontStyle: 'normal',
                         fontFamily: 'SCoreDream'
                     },
@@ -144,7 +170,9 @@
                     },
                     scales: {
                         xAxes: [{
-                            stacked: true
+                            display: false,
+                            stacked: true,
+                            barThickness: 40
                         }],
                         yAxes: [{
                             display: false,
@@ -154,7 +182,9 @@
                 }
             })
         }
-
+//
+//======================================== 내국인 파이 차트 ============================================
+//
     function drawDomesticVisitorDataByMonthPieChart(data, year, month) {
         var ctx = document.getElementById("domesticVisitorDataByMonthPieChart").getContext("2d");
 
@@ -169,33 +199,70 @@
                 datasets: [
                 {
                     label: '방문자수',
-                    data: data
-                },
+                    data: data,
+                    backgroundColor: ['#FFD265','#6A7FE1','#3ca4f3','#FFB465','#8B5DC9','#E97EC4']
+                }
                 ]
             },
             options: {
                     title:{
                         display:true,
-                        text: month + '월 내국인 방문목적',
+                        text: '내국인 방문목적',
                         fontStyle: 'normal',
                         fontSize: 18,
                         fontFamily: 'SCoreDream'
                     },
                     legend:{
-                        display:true
-                    },
-                    scales: {
-                        yAxes: [{
-                            ticks: {
-                                beginAtZero: true,
-                                min: 0
-                            }
-                        }]
+                        display:true,
+                        position: 'bottom'
                     }
             }
         });
     }
+//
+//======================================== 외국인 파이 차트 ============================================
+//
+    function drawForeignVisitorDataByMonthPieChart(data, year, month) {
+            var ctx = document.getElementById("foreignVisitorDataByMonthPieChart").getContext("2d");
 
+            if(foreignVisitorDataByMonthPieChart != null) {
+                foreignVisitorDataByMonthPieChart.destroy()
+            }
+
+            foreignVisitorDataByMonthPieChart = new Chart(ctx, {
+                type: "pie",
+                data: {
+                    labels: ['일본','중국','홍콩','대만','싱가폴','말레이시아','인도네시아','베트남','미국','기타'],
+                    datasets: [
+                    {
+                        label: '외국인 방문자수',
+                        data: [data.japan, data.china, data.hongkong, data.taiwan, data.singapore, data.malaysia, data.indonesia, data.vietnam, data.usa, data.misc],
+                        backgroundColor: ['#FFD265','#6A7FE1','#3ca4f3','#FFB465','#8B5DC9','#E97EC4','#FFD265','#6A7FE1','#3ca4f3','#FFB465','#8B5DC9','#E97EC4','#FFD265']
+                    }
+                    ]
+                },
+                options: {
+                        title:{
+                            display:true,
+                            text: '외국인 방문객',
+                            fontStyle: 'normal',
+                            fontSize: 18,
+                            fontFamily: 'SCoreDream'
+                        },
+                        legend:{
+                            display:true,
+                            position: 'bottom'
+                        }
+                }
+            });
+        }
+//
+
+    function setCountOfVisitorDetail(cumSumOfVisitor, countOfVisitor, averageOfVisitor) {
+        countOfVisitorDetail.cumSumOfVisitor = cumSumOfVisitor.toLocaleString('ko-KR');
+        countOfVisitorDetail.countOfVisitor = countOfVisitor.toLocaleString('ko-KR');
+        countOfVisitorDetail.averageOfVisitor = averageOfVisitor.toLocaleString('ko-KR');
+    }
 
     function getDomesticVisitorDataByYear(year) {
         var data = [];
@@ -257,40 +324,39 @@
 
         return data;
     };
-    
 
+    function getCumSumOfVisitor(startDate, endDate){
+        var cumSum = 0;
+
+        $.ajax({
+           type: 'GET',
+           url: '/api/v1/domesticVisitorData/cumSum?startDate='+startDate+'&endDate='+endDate,
+           async: false,
+           success: function(response) {
+               cumSum += response;
+           }
+        })
+
+
+        $.ajax({
+           type: 'GET',
+           url: '/api/v1/foreignVisitorData/cumSum?startDate='+startDate+'&endDate='+endDate,
+           async: false,
+           success: function(response) {
+               cumSum += response;
+           }
+        })
+
+        return cumSum;
+    }
 
     $(document).ready(function () {
         var year = 2022;
 
         var month = 11;
 
-        var domesticVisitorDataByYear = getDomesticVisitorDataByYear(year);
+        setYearData(year)
 
-        var foreignVisitorDataByYear = getForeignVisitorDataByYear(year);
-
-        var totalVisitorDataByYear = [];
-
-        for(var i=0; i<domesticVisitorDataByYear.length; i++) {
-            var sum = domesticVisitorDataByYear[i].sum + foreignVisitorDataByYear[i].sum;
-
-            totalVisitorDataByYear.push(sum);
-        }
-
-        drawTotalVisitorDataByYearChart(totalVisitorDataByYear, year)
-
-        var domesticVisitorDataByMonth = getDomesticVisitorDataByMonth(year, month);
-
-        var domesticVisitorDataByMonthAndTravelType = [domesticVisitorDataByMonth.independentTour, domesticVisitorDataByMonth.partialPackageTour, domesticVisitorDataByMonth.packageTour]
-
-        drawDomesticVisitorDataByMonthBarChart(domesticVisitorDataByMonthAndTravelType, year, month)
-
-        var domesticVisitorDataByMonthAndPurpose = [domesticVisitorDataByMonth.leisureSports, domesticVisitorDataByMonth.business, domesticVisitorDataByMonth.relaxation, domesticVisitorDataByMonth.visit, domesticVisitorDataByMonth.education, domesticVisitorDataByMonth.misc]
-
-        drawDomesticVisitorDataByMonthPieChart(domesticVisitorDataByMonthAndPurpose, year, month)
-
-        var foreignVisitorDataByMonth = getForeignVisitorDataByMonth(year, month);
-
-
+        setMonthData(year, month);
     })
 })(jQuery);

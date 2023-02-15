@@ -1,5 +1,6 @@
 package com.thejoen.jeju.controller.page;
 
+import com.thejoen.jeju.service.DomesticVisitorDataService;
 import com.thejoen.jeju.service.RentalCarService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -7,11 +8,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.time.LocalDate;
+
 @RequiredArgsConstructor
 @Controller
 public class PageController {
 
-    private final RentalCarService rentalCarService;
+    private final DomesticVisitorDataService domesticVisitorDataService;
 
     @GetMapping("/")
     public String index() {
@@ -25,7 +28,14 @@ public class PageController {
     }
 
     @GetMapping("/bigdata/dashboard")
-    public String something() {
+    public String dashBoard(Model model) {
+
+        LocalDate maxMonth = domesticVisitorDataService.findMaxMonth();
+
+        model.addAttribute("maxYear", maxMonth.getYear());
+
+        model.addAttribute("maxMonth", maxMonth.getMonthValue());
+
         return "dashboard";
     }
 

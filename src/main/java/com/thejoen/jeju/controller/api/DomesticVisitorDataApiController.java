@@ -31,4 +31,10 @@ public class DomesticVisitorDataApiController {
         return domesticVisitorDataService.search(request);
     }
 
+    @GetMapping("cumSum")
+    public ResponseEntity<Long> findCumSumOfVisitor(@RequestParam String startDate, @RequestParam String endDate){
+        return domesticVisitorDataService.findCumSumOfVisitor(startDate, endDate);
+    }
+
+
 }

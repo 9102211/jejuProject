@@ -24,8 +24,17 @@ public class DomesticVisitorDataService {
         return ResponseEntity.ok(new DomesticVisitorDataResponseDTO(domesticVisitorData));
     }
 
-    public  ResponseEntity<List<DomesticVisitorDataResponseDTO>> search(DomesticVisitorDataRequestDTO request) {
+    public ResponseEntity<List<DomesticVisitorDataResponseDTO>> search(DomesticVisitorDataRequestDTO request) {
 
         return ResponseEntity.ok(domesticVisitorDataRepository.search(request));
     }
+
+    public LocalDate findMaxMonth() {
+        return domesticVisitorDataRepository.findMaxMonth().toLocalDateTime().toLocalDate();
+    }
+
+    public ResponseEntity<Long> findCumSumOfVisitor(String startDate, String endDate) {
+        return ResponseEntity.ok(domesticVisitorDataRepository.findCumSumOfVisitor(startDate, endDate));
+    }
+
 }
