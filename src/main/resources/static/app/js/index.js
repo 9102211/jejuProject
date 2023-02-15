@@ -47,4 +47,18 @@
 
         })
       }
+
+
+      function getBlogURL(){
+        $.ajax({
+            type: 'GET',
+            url: 'http://192.168.0.59:5000/keyword/성산일출봉',
+            contentType : 'application/json; charset=cp949',
+            success: function(response) {
+                 console.log(response)
+            }
+         })
+      }
+
+      getBlogURL()
 })(jQuery);
