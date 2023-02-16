@@ -11,6 +11,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.thejoen.jeju.model.entitiy.Content;
 import com.thejoen.jeju.model.entitiy.QContent;
 import com.thejoen.jeju.model.entitiy.RentalCar;
+import com.thejoen.jeju.model.enumclass.CategoryType;
 import com.thejoen.jeju.model.network.dto.request.ContentSearchRequestDTO;
 import com.thejoen.jeju.model.network.dto.response.ContentResponseDTO;
 import lombok.RequiredArgsConstructor;
@@ -49,8 +50,10 @@ public class ContentRepositoryImpl implements ContentRepositoryCustom{
                         ))
                 .from(content)
                 .where(
-                        content.category.eq(request.getCategory()),
-                        titleOrDescOrTagContains(request.getKeyword())
+                        categoryEq(request.getCategory()),
+                        idIn(request.getIdList()),
+                        titleOrDescOrTagContains(request.getKeyword()),
+                        tagContains(request.getWeather())
                 )
                 .orderBy(ORDERS.stream().toArray(OrderSpecifier[]::new))
                 .offset(pageable.getOffset())
@@ -59,8 +62,10 @@ public class ContentRepositoryImpl implements ContentRepositoryCustom{
         JPQLQuery<Content> countQuery = queryFactory
                 .selectFrom(content)
                 .where(
-                        content.category.eq(request.getCategory()),
-                        titleOrDescOrTagContains(request.getKeyword())
+                        categoryEq(request.getCategory()),
+                        idIn(request.getIdList()),
+                        titleOrDescOrTagContains(request.getKeyword()),
+                        tagContains(request.getWeather())
                 );
         return PageableExecutionUtils.getPage(contents, pageable, countQuery::fetchCount);
     }
@@ -75,6 +80,9 @@ public class ContentRepositoryImpl implements ContentRepositoryCustom{
                 Order direction = order.getDirection().isAscending() ? Order.ASC : Order.DESC;
 
                 switch (order.getProperty()) {
+                    case "random" :
+                        orders.add(new OrderSpecifier(direction, Expressions.numberTemplate(Double.class, "dbms_random.value()")));
+                        break;
                     case "search" :
                         Expression<String> pattern = Expressions.stringTemplate("{0}", keyword);
                         orders.add(new OrderSpecifier(direction, Expressions.numberTemplate(Long.class, "regexp_count({0}, {1})", content.title, pattern)));
@@ -101,6 +109,22 @@ public class ContentRepositoryImpl implements ContentRepositoryCustom{
     private BooleanExpression titleOrDescOrTagContains(String keyword) {
 
         return StringUtils.isNotBlank(keyword) ? content.title.contains(keyword).or(content.description.contains(keyword).or(content.tag.contains(keyword))) : null;
-
     }
+
+    private BooleanExpression tagContains(String weather) {
+
+        return StringUtils.isNotBlank(weather) ? content.tag.contains(weather) : null;
+    }
+
+    private BooleanExpression categoryEq(CategoryType category) {
+
+        return category != null ? content.category.eq(category) : null;
+    }
+
+    private BooleanExpression idIn(List<String> idList) {
+
+        return idList != null && !idList.isEmpty() ? content.id.in(idList) : null;
+    }
+
+
 }
