@@ -24,7 +24,22 @@ function setMarkers(contentList) {
     var idx = 0;
 
     contentList.forEach(function (content){
-        var imageSrc = '/images/markers/rental-car.png',
+
+        var markerImage = '';
+
+        if(content.category === '관광지') {
+            markerImage = 'tourMaker.png';
+        }else if(content.category === '음식점') {
+             markerImage = 'foodMaker.png';
+        }else if(content.category === '숙박') {
+            markerImage = 'stayMaker.png';
+        }else if(content.category === '쇼핑') {
+           markerImage = 'shoppingMaker.png';
+        }else{
+            markerImage = 'rentalcarMaker.png';
+        }
+
+        var imageSrc = '/images/markers/'+markerImage,
             imageSize = new kakao.maps.Size(40, 40),
             imageOption = {offset : new kakao.maps.Point(20, 35)}
 

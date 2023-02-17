@@ -24,16 +24,18 @@
 
 .card-title {
     font-size: 14px;
+    line-height: 15px;
 }
 
 #mainImageCarousel {
     width:100%;
-    height: 600px;
+    height: 500px;
     overflow: hidden;
 }
 
 .main-img {
     width:100%;
+    height: 500px;
 }
 @keyframes fadein {
     from {

@@ -30,9 +30,9 @@
             contentList : {}
         },
         methods : {
-//            toMoreResults : function(){
-//                location.href = '/tour?keyword='+searchResult.keyword
-//            },
+            toMoreResults : function(){
+                location.href = '/search?keyword='+searchResult.keyword
+            },
 //
 //            setContentId : function(id) {
 //                contentId = id;
@@ -84,9 +84,8 @@
 
     $(document).ready(function () {
        var weatherCode = getWeather();
-       getRecommendContentByWeather(weatherCode);
-       var idList = getRecommend(getCookieWord('history'));
-       getRecommendContentByHistory(idList)
+       setRecommendContentByWeather(weatherCode);
+       setRecommend(getCookieWord('history'));
     });
 
     // 날씨 api
@@ -98,8 +97,8 @@
         $.ajax({
            type: 'GET',
            url: url,
-           async: false,
            success: function(response) {
+               console.log(response)
                weather.icon = weatherIcon[(response.weather[0].icon).substr(0,2)];
                weatherCode = (response.weather[0].icon).substr(0,2);
                weather.weatherDescription = response.weather[0].main;
@@ -115,37 +114,36 @@
         return weatherCode;
       }
 
-    function getRecommendContentByWeather(weatherCode) {
+    function setRecommendContentByWeather(weatherCode) {
+        console.log(weatherCode)
+
         $.get("/api/v1/content?category=tour&size=3&sort=random&weather=" + weatherDescription[weatherCode], function(response) {
             recommendContentByWeather.contentList = response.data;
         })
     }
 
-    function getRecommendContentByHistory(idList) {
+    function setRecommendContentByHistory(idList) {
         $.get("/api/v1/content?idList=" + idList, function(response) {
+            console.log(response)
+
             recommendContentByHistory.contentList = response.data;
         })
     }
 
-    function getRecommend(keyword){
-        var idList;
-
+    function setRecommendContent(keyword){
         $.ajax({
             type: 'GET',
             url: 'http://192.168.0.59:5000/keyword/' + keyword,
             contentType : 'application/json; charset=cp949',
-            async: false,
             success: function(response) {
-                console.log(response)
+                idList = response.idList.join(",");
 
-                idList = response.contentList.join(",");
+                setRecommendContentByHistory(idList)
 
                 recommendNaverBlogByHistory.contentList = response.naverBlogList;
-
             }
          })
 
-         return idList;
     }
 
     function getCookieWord(name) {
@@ -160,6 +158,12 @@
           return cookieWords.join(" ");;
         }
       }
-      return null;
+      return '제주';
+    }
+
+    function setYoutube(keyword) {
+        $.get("https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=2&type=video&key=AIzaSyDFUmIFYT4Jn2W0oW0f0HH9NyzpK-jJnPo&q=제주 " + keyword +"vlog", function (response){
+            content.youtubeList = response.items;
+        });
     }
 })(jQuery);

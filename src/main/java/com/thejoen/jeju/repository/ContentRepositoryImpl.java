@@ -112,7 +112,7 @@ public class ContentRepositoryImpl implements ContentRepositoryCustom{
     }
 
     private BooleanExpression tagContains(String weather) {
-
+        System.out.print(weather);
         return StringUtils.isNotBlank(weather) ? content.tag.contains(weather) : null;
     }
 
