@@ -1,6 +1,5 @@
 server:
   port: 9090
-
 spring:
   datasource:
     url: jdbc:oracle:thin:@127.0.0.1:1521:XE
@@ -14,6 +13,3 @@ spring:
       hibernate:
         format_sql: true
         show_sql: true
-
-
-

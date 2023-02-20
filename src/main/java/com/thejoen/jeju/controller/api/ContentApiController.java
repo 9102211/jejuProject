@@ -29,15 +29,11 @@ public class ContentApiController {
     @GetMapping("/{id}")
     public ResponseEntity<ContentResponseDTO> read(@PathVariable String id, HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
 
-        ResponseEntity<ContentResponseDTO> contentResponseDTOResponseEntity = contentService.read(id);
-
-        ContentResponseDTO contentResponseDTO = contentResponseDTOResponseEntity.getBody();
-
         // 기존 쿠키에서 항목을 가져옴
         List<String> items = getItemsFromCookie(request);
 
         // 새로운 항목을 추가
-        String newItem = URLEncoder.encode(contentResponseDTO.getTitle(), "UTF-8");
+        String newItem = URLEncoder.encode(id, "UTF-8");
 
         items.add(0, newItem); // 가장 최신 항목으로 추가
 
@@ -49,7 +45,7 @@ public class ContentApiController {
         // 항목을 쿠키에 저장
         saveItemsToCookie(items, response);
 
-        return contentResponseDTOResponseEntity;
+        return contentService.read(id);
     }
 
     @GetMapping("")

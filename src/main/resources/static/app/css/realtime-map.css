@@ -1,0 +1,23 @@
+.btn-layer {
+    border-radius: 100px;
+}
+
+.btn-layer:focus, .btn-layer:active {
+    box-shadow: none;
+}
+
+#zoom-buttons {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 5;
+}
+
+#zoom-buttons button {
+  font-size: 1.2em;
+  padding: 5px 10px;
+  border: none;
+  background-color: #fff;
+  color: #000;
+  cursor: pointer;
+}

@@ -55,3 +55,30 @@
 .card {
   height: 190px;
 }
+
+#zoom-buttons {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 1;
+}
+
+#zoom-buttons button {
+    font-size: 1.2em;
+    padding: 5px 10px;
+    border: none;
+    background-color: #fff;
+    color: #000;
+    cursor: pointer;
+}
+
+#message {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1;
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 14px;
+}

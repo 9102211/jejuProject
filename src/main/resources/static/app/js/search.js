@@ -166,7 +166,7 @@
             content.content = response;
 
             if(response.category === '관광지') {
-//                setYoutube(response.title)
+                setYoutube(response.title)
             }
         });
     }

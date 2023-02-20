@@ -116,29 +116,49 @@
           <div>
             <h4>관련 YOUTUBE 영상</h4>
           </div>
-
-        </div>
-        <div>
           <div>
+            <div id="youtubeCarousel" class="carousel slide" data-ride="carousel">
+              <div id="recommendYoutubeByHistory" class="carousel-inner">
+                <div class="carousel-item" data-interval="false" v-for="number in contentList.length/3" :class="{'active' : number == '1'}">
+                  <div class="row">
+                    <iframe v-for="content in contentList.slice(3*(number-1), 3*number)" class="col" height="210" v-bind:src="'https://www.youtube.com/embed/'+content.id.videoId" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                  </div>
+                </div>
+              </div>
+              <ol class="carousel-indicators">
+                <li data-target="#youtubeCarousel" v-for="number in contentList.length/3" v-bind:data-slide-to="number-1" :class="{'active' : number == '1'}"></li>
+              </ol>
+            </div>
+          </div>
+        </div>
+        <div class="py-3">
+          <div class="mb-3">
             <h4>네이버 블로그 포스트</h4>
           </div>
           <div>
             <div id="naverBlogCarousel" class="carousel slide" data-ride="carousel">
-              <div class="carousel-inner">
-                <div class="carousel-item" data-interval="false" v-for="number in 5">
-                  <div v-for="content in contentList.slice(3*(number-1), 3*number)">
-                    {{content}}
+              <div id="recommendNaverBlogByHistory" class="carousel-inner">
+                <div class="carousel-item" data-interval="false" v-for="number in contentList.length/2" :class="{'active' : number == '1'}">
+                  <div class="row">
+                    <div class="col" v-for="content in contentList.slice(2*(number-1), 2*number)">
+                      <div class="row" v-on:click="openBlog(content)" style="cursor:pointer;">
+                        <div class="col-3 d-flex border-right pr-0">
+                          <div class="align-self-center bloggername pr-1">
+                            {{content.bloggername}}
+                          </div>
+                        </div>
+                        <div class="col-9">
+                            <p class="blog-title mt-2 mb-1" v-html="content.title"></p>
+                            <p class="blog-content" v-html="content.description"></p>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
-              <button class="carousel-control-prev" type="button" data-target="#naverBlogCarousel" data-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="sr-only">Previous</span>
-              </button>
-              <button class="carousel-control-next" type="button" data-target="#naverBlogCarousel" data-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="sr-only">Next</span>
-              </button>
+              <ol class="carousel-indicators">
+                <li data-target="#naverBlogCarousel" v-for="number in contentList.length/3" v-bind:data-slide-to="number-1" :class="{'active' : number == '1'}"></li>
+              </ol>
             </div>
           </div>
         </div>

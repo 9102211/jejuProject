@@ -43,6 +43,8 @@ public class Content {
 
     private Double googleScore;
 
+    private Long countOfReview;
+
     @Enumerated(EnumType.STRING)
     private CategoryType category;
 

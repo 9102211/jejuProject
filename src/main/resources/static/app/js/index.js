@@ -59,7 +59,19 @@
     var recommendNaverBlogByHistory = new Vue({
         el : '#recommendNaverBlogByHistory',
         data : {
-            contentList : {}
+            contentList : []
+        },
+        methods : {
+            openBlog : function(content) {
+                window.open(content.link)
+            }
+        }
+    })
+
+    var recommendYoutubeByHistory = new Vue({
+        el : '#recommendYoutubeByHistory',
+        data : {
+            contentList : []
         },
         methods : {
 
@@ -83,24 +95,21 @@
     });
 
     $(document).ready(function () {
-       var weatherCode = getWeather();
-       setRecommendContentByWeather(weatherCode);
-       setRecommend(getCookieWord('history'));
+       getWeather();
+       setRecommendContent(getCookieWord('history'));
     });
 
     // 날씨 api
     function getWeather() {
         var url = "https://api.openweathermap.org/data/2.5/weather?q=jeju&appid=4c898866d30a8fec71c8c393e0680b95";
 
-        var weatherCode = '';
-
         $.ajax({
            type: 'GET',
            url: url,
            success: function(response) {
-               console.log(response)
                weather.icon = weatherIcon[(response.weather[0].icon).substr(0,2)];
-               weatherCode = (response.weather[0].icon).substr(0,2);
+               var weatherCode = (response.weather[0].icon).substr(0,2);
+               setRecommendContentByWeather(weatherCode);
                weather.weatherDescription = response.weather[0].main;
                weather.temp = Math.floor(response.main.temp- 273.15) + 'º';
                weather.humidity = response.main.humidity+ ' %';
@@ -110,12 +119,9 @@
                weather.tempMax = Math.floor(response.main.temp_max- 273.15) + 'º';
            }
         })
-
-        return weatherCode;
       }
 
     function setRecommendContentByWeather(weatherCode) {
-        console.log(weatherCode)
 
         $.get("/api/v1/content?category=tour&size=3&sort=random&weather=" + weatherDescription[weatherCode], function(response) {
             recommendContentByWeather.contentList = response.data;
@@ -124,26 +130,26 @@
 
     function setRecommendContentByHistory(idList) {
         $.get("/api/v1/content?idList=" + idList, function(response) {
-            console.log(response)
-
             recommendContentByHistory.contentList = response.data;
         })
     }
 
-    function setRecommendContent(keyword){
+    function setRecommendContent(code){
         $.ajax({
             type: 'GET',
-            url: 'http://192.168.0.59:5000/keyword/' + keyword,
-            contentType : 'application/json; charset=cp949',
+            url: 'http://192.168.0.59:5000/code/' + code,
+            contentType : 'application/json; charset=utf-8',
             success: function(response) {
                 idList = response.idList.join(",");
 
                 setRecommendContentByHistory(idList)
 
-                recommendNaverBlogByHistory.contentList = response.naverBlogList;
+                response.titleList.forEach(title => {
+                    setNaverBlog(title)
+                    setYoutube(title)
+                })
             }
          })
-
     }
 
     function getCookieWord(name) {
@@ -162,8 +168,17 @@
     }
 
     function setYoutube(keyword) {
-        $.get("https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=2&type=video&key=AIzaSyDFUmIFYT4Jn2W0oW0f0HH9NyzpK-jJnPo&q=제주 " + keyword +"vlog", function (response){
-            content.youtubeList = response.items;
+        $.get("https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=3&type=video&key=AIzaSyCF4rJYoAoJ135ad6tNAR5qBRncxvR0th8&q=제주," + keyword, function (response){
+            recommendYoutubeByHistory.contentList.push(response.items[0]);
+            recommendYoutubeByHistory.contentList.push(response.items[1]);
         });
     }
+
+    function setNaverBlog(keyword) {
+        $.get("/api/v1/naverBlog?keyword=" + keyword, function (response){
+            recommendNaverBlogByHistory.contentList.push(response[0])
+            recommendNaverBlogByHistory.contentList.push(response[1])
+        });
+    }
+
 })(jQuery);

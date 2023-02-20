@@ -1,5 +1,7 @@
 package com.thejoen.jeju.repository;
 
+import com.querydsl.core.JoinExpression;
+import com.querydsl.core.JoinType;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
@@ -10,6 +12,7 @@ import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.thejoen.jeju.model.entitiy.Content;
 import com.thejoen.jeju.model.entitiy.QContent;
+import com.thejoen.jeju.model.entitiy.QReview;
 import com.thejoen.jeju.model.entitiy.RentalCar;
 import com.thejoen.jeju.model.enumclass.CategoryType;
 import com.thejoen.jeju.model.network.dto.request.ContentSearchRequestDTO;
@@ -32,6 +35,8 @@ public class ContentRepositoryImpl implements ContentRepositoryCustom{
 
     private final JPAQueryFactory queryFactory;
     private QContent content = QContent.content;
+
+    private QReview review = QReview.review;
 
     @Override
     public Page<ContentResponseDTO> search(ContentSearchRequestDTO request, Pageable pageable) {
@@ -80,6 +85,9 @@ public class ContentRepositoryImpl implements ContentRepositoryCustom{
                 Order direction = order.getDirection().isAscending() ? Order.ASC : Order.DESC;
 
                 switch (order.getProperty()) {
+                    case "countOfReview" :
+                        orders.add(new OrderSpecifier(direction, content.countOfReview));
+                        break;
                     case "random" :
                         orders.add(new OrderSpecifier(direction, Expressions.numberTemplate(Double.class, "dbms_random.value()")));
                         break;
@@ -112,7 +120,6 @@ public class ContentRepositoryImpl implements ContentRepositoryCustom{
     }
 
     private BooleanExpression tagContains(String weather) {
-        System.out.print(weather);
         return StringUtils.isNotBlank(weather) ? content.tag.contains(weather) : null;
     }
 
