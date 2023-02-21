@@ -30,13 +30,9 @@
             contentList : {}
         },
         methods : {
-            toMoreResults : function(){
-                location.href = '/search?keyword='+searchResult.keyword
-            },
-//
-//            setContentId : function(id) {
-//                contentId = id;
-//            }
+            search : function(content){
+                location.href = '/search?keyword='+ content.title
+            }
         }
     });
 
@@ -46,13 +42,9 @@
             contentList : {}
         },
         methods : {
-//            toMoreResults : function(){
-//                location.href = '/tour?keyword='+searchResult.keyword
-//            },
-//
-//            setContentId : function(id) {
-//                contentId = id;
-//            }
+            search : function(content){
+                location.href = '/search?keyword='+ content.title
+            }
         }
     });
 
@@ -137,7 +129,7 @@
     function setRecommendContent(code){
         $.ajax({
             type: 'GET',
-            url: 'http://192.168.0.59:5000/code/' + code,
+            url: 'http://localhost:5000/code/' + code,
             contentType : 'application/json; charset=utf-8',
             success: function(response) {
                 idList = response.idList.join(",");
@@ -164,13 +156,14 @@
           return cookieWords.join(" ");;
         }
       }
-      return '제주';
+      return 'CONT_000000000500685';
     }
 
     function setYoutube(keyword) {
         $.get("https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=3&type=video&key=AIzaSyCF4rJYoAoJ135ad6tNAR5qBRncxvR0th8&q=제주," + keyword, function (response){
             recommendYoutubeByHistory.contentList.push(response.items[0]);
             recommendYoutubeByHistory.contentList.push(response.items[1]);
+            recommendYoutubeByHistory.contentList.push(response.items[2]);
         });
     }
 

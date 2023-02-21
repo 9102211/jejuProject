@@ -186,16 +186,19 @@
             <div class="justify-content-center d-flex my-1">
               <div style="width: 500px;">
                 <div>
-                  <span class="pr-1" style="cursor: pointer;" v-on:click="showContent()">세부 정보</span>
-                  <span class="pl-1"  style="cursor: pointer;" v-on:click="showReview()">종합 후기</span>
+                  <span id="btn-detail" class="pr-1 text-primary" style="cursor: pointer;" v-on:click="showContent()">세부 정보</span>
+                  <span id="btn-review" class="pl-1"  style="cursor: pointer;" v-on:click="showReview()">종합 후기</span>
                 </div>
                 <div class="border-top py-2">
                   <div v-show="contentIsClicked">
                     <div>
                       <p><i class="bi bi-geo-alt-fill"></i> 도로명주소 : {{content.address}}</p>
-                      <p><i class="bi bi-clock"></i> 오픈시간 : {{content.openTime}}</p>
-                      <p><i class="bi bi-telephone"></i> 전화번호 : {{content.tel}}</p>
-                      <p><i class="bi bi-window"></i> 홈페이지 : <a v-bind:href="content.homePage" target="_blank">{{content.homePage}}</a></p>
+                      <p v-if="content.openTime != null && content.openTime.trim().length > 0"><i class="bi bi-clock"></i> 오픈시간 : {{content.openTime}}</p>
+                      <p v-else><i class="bi bi-clock"></i> 오픈시간 : 정보 없음</p>
+                      <p v-if="content.tel != null && content.tel.trim().length > 0"><i class="bi bi-telephone"></i> 전화번호 : {{content.tel}}</p>
+                      <p v-else><i class="bi bi-telephone"></i> 전화번호 : 정보 없음</p>
+                      <p v-if="content.homepage != null && content.homepage.trim().length > 0"><i class="bi bi-window"></i> 홈페이지 : <a v-bind:href="content.homepage" target="_blank">{{content.homepage}}</a></p>
+                      <p v-else><i class="bi bi-window"></i> 홈페이지 : 정보 없음</p>
                     </div>
                     <div v-if="content.category == '관광지'" class="border-top py-2">
                       <div><p><i class="bi bi-youtube"></i> YOUTUBE VLOG</p></div>
@@ -248,8 +251,11 @@
                         </div>
                       </li>
                     </ul>
+                    <div v-show="reviewList.length == 0">
+                      <div>리뷰가 없습니다.</div>
+                    </div>
                     <div>
-                      <button class="btn btn-primary btn-block" v-on:click="showMore()">더보기</button>
+                      <button id="btn-more" class="btn btn-primary btn-block" v-on:click="showMore()">더보기</button>
                     </div>
                   </div>
                 </div>

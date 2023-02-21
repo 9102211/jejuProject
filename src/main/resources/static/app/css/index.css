@@ -15,6 +15,7 @@
 
 .card {
   height: 200px;
+  cursor: pointer;
 }
 
 .card-body {
@@ -66,6 +67,20 @@
   color:#3ca4f3;
 }
 
+.carousel-indicators {
+  position: static;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 0px;
+}
+
+.carousel-indicators li {
+    background-color: gray;
+}
+
+.carousel-indicators li.active {
+    background-color: black;
+}
 
 @keyframes fadein {
     from {

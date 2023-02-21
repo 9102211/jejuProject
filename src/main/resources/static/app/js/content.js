@@ -31,8 +31,10 @@
             reviewIsClicked : false
         },
         methods: {
-            showContent : function() {
+           showContent : function() {
                 if(!this.contentIsClicked) {
+                    $('#btn-review').removeClass('text-primary')
+                    $('#btn-detail').addClass('text-primary')
                     this.contentIsClicked = true
                     this.reviewIsClicked = false
                 }
@@ -40,6 +42,8 @@
 
             showReview : function() {
                 if(!this.reviewIsClicked) {
+                    $('#btn-detail').removeClass('text-primary')
+                    $('#btn-review').addClass('text-primary')
                     this.reviewIsClicked = true
                     this.contentIsClicked = false
                 }
@@ -62,6 +66,14 @@
             totalElements : {},
             categoryType : {},
             keyword : ''
+        }
+    });
+
+    var reviewInfo = new Vue({
+        el : '#Info',
+        data : {
+            totalElements : {},
+            hi : 'hi'
         }
     });
 
@@ -202,13 +214,13 @@
             content.content = response;
 
             if(response.category === '관광지') {
-//                setYoutube(response.title)
+                setYoutube(response.title)
             }
         });
     }
 
     function setYoutube(keyword) {
-        $.get("https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=2&type=video&key=AIzaSyDFUmIFYT4Jn2W0oW0f0HH9NyzpK-jJnPo&q=제주 " + keyword +"vlog", function (response){
+        $.get("https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=2&type=video&key=AIzaSyDFUmIFYT4Jn2W0oW0f0HH9NyzpK-jJnPo&q=제주," + keyword +",vlog", function (response){
             content.youtubeList = response.items;
         });
     }
@@ -230,6 +242,14 @@
             }
 
             reviewPagination = response.pagination;
+
+            reviewInfo.totalElements = reviewPagination.totalElements;
+
+            if(reviewPagination.totalPages == 0 || reviewPagination.totalPages-1 == reviewPagination.currentPage) {
+                $('#btn-more').addClass('d-none');
+            }else {
+                $('#btn-more').removeClass('d-none');
+            }
         })
     }
 
