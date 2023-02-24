@@ -81,14 +81,20 @@
             wind : {},
             city : {},
             cloud : {},
-            tempMin : {},
-            tempMax : {}
+            feelsLike : {},
         }
     });
 
     $(document).ready(function () {
-       getWeather();
-       setRecommendContent(getCookieWord('history'));
+        getWeather();
+
+        var keyword = getCookieWord('history');
+
+        if(keyword === null) {
+            keyword = getRandomContent();
+        }
+
+        setRecommendContent(keyword);
     });
 
     // 날씨 api
@@ -99,6 +105,8 @@
            type: 'GET',
            url: url,
            success: function(response) {
+
+                console.log(response)
                weather.icon = weatherIcon[(response.weather[0].icon).substr(0,2)];
                var weatherCode = (response.weather[0].icon).substr(0,2);
                setRecommendContentByWeather(weatherCode);
@@ -107,8 +115,7 @@
                weather.humidity = response.main.humidity+ ' %';
                weather.wind = response.wind.speed + ' m/s';
                weather.cloud = response.clouds.all +"%";
-               weather.tempMin = Math.floor(response.main.temp_min- 273.15) + 'º';
-               weather.tempMax = Math.floor(response.main.temp_max- 273.15) + 'º';
+               weather.feelsLike = Math.floor(response.main.feels_like- 273.15) + 'º';
            }
         })
       }
@@ -120,6 +127,23 @@
         })
     }
 
+    function getRandomContent() {
+        var keyword = '';
+        $.ajax({
+            type: 'GET',
+            url: '/api/v1/content?category=tour&size=5&sort=random',
+            contentType : 'application/json; charset=utf-8',
+            async: false,
+            success: function(response) {
+                response.data.forEach(data=> {
+                    keyword += data.id + ' '
+                })
+            }
+         })
+
+        return keyword;
+    }
+
     function setRecommendContentByHistory(idList) {
         $.get("/api/v1/content?idList=" + idList, function(response) {
             recommendContentByHistory.contentList = response.data;
@@ -129,7 +153,7 @@
     function setRecommendContent(code){
         $.ajax({
             type: 'GET',
-            url: 'http://localhost:5000/code/' + code,
+            url: 'http://192.168.0.59:5000/code/' + code,
             contentType : 'application/json; charset=utf-8',
             success: function(response) {
                 idList = response.idList.join(",");
@@ -156,7 +180,7 @@
           return cookieWords.join(" ");;
         }
       }
-      return 'CONT_000000000500685';
+      return null;
     }
 
     function setYoutube(keyword) {

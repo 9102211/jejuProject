@@ -67,6 +67,9 @@
                                 </ul>
                             </div>
                         </div>
+                        <button class="btn btn-secondary" type="button" style="position: absolute; left:200px; z-index: 100;" onclick="simulation()">
+                            시뮬레이션
+                        </button>
                         <div id="map-screen" class="d-none justify-content-center align-items-center">
                             <div class="map-screen-message">
                                 Ctrl키를 누르면 확대/축소 가능합니다
@@ -80,7 +83,7 @@
                 </div>
             </div>
         </main>
-        <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=5851690a093d31058c03fd4dbfa30936&libraries=services,clusterer,drawing"></script>
+        <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=562416156d434c9d126d573a40559b09&libraries=services,clusterer,drawing"></script>
         <script th:src="@{/app/js/status-code.js}"></script>
         <script th:src="@{/app/js/bigdata-kakaomap.js}"></script>
         <script th:src="@{/app/js/kakaomap.js}"></script>

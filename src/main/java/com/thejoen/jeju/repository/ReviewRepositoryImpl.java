@@ -1,17 +1,13 @@
 package com.thejoen.jeju.repository;
 
-import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.thejoen.jeju.model.entitiy.QRentalCar;
 import com.thejoen.jeju.model.entitiy.QReview;
-import com.thejoen.jeju.model.entitiy.RentalCar;
 import com.thejoen.jeju.model.entitiy.Review;
 import com.thejoen.jeju.model.enumclass.ReviewType;
 import com.thejoen.jeju.model.network.dto.request.ReviewSearchRequestDTO;
-import com.thejoen.jeju.model.network.dto.response.RentalCarResponseDTO;
 import com.thejoen.jeju.model.network.dto.response.ReviewResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

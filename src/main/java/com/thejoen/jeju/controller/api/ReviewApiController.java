@@ -2,9 +2,7 @@ package com.thejoen.jeju.controller.api;
 
 import com.thejoen.jeju.model.network.PaginationDTO;
 import com.thejoen.jeju.model.network.dto.request.ReviewSearchRequestDTO;
-import com.thejoen.jeju.model.network.dto.response.RentalCarResponseDTO;
 import com.thejoen.jeju.model.network.dto.response.ReviewResponseDTO;
-import com.thejoen.jeju.repository.ReviewRepository;
 import com.thejoen.jeju.service.ReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;

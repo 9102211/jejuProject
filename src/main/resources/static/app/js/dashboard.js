@@ -200,7 +200,7 @@
                 {
                     label: '방문자수',
                     data: data,
-                    backgroundColor: ['#FFD265','#6A7FE1','#3ca4f3','#FFB465','#8B5DC9','#E97EC4']
+                    backgroundColor: ['#FFD265','#6A7FE1','#3ca4f3','#FFB465','#8B5DC9','#90E39D']
                 }
                 ]
             },
@@ -237,7 +237,7 @@
                     {
                         label: '외국인 방문자수',
                         data: [data.japan, data.china, data.hongkong, data.taiwan, data.singapore, data.malaysia, data.indonesia, data.vietnam, data.usa, data.misc],
-                        backgroundColor: ['#FFD265','#6A7FE1','#3ca4f3','#FFB465','#8B5DC9','#E97EC4','#FFD265','#6A7FE1','#3ca4f3','#FFB465','#8B5DC9','#E97EC4','#FFD265']
+                        backgroundColor: ['#FFD265', '#0074D9', '#90E39D', '#6495ED', '#FFB6C1', '#1E90FF', '#FFC0CB', '#ADD8E6', '#FFB465', '#87CEFA']
                     }
                     ]
                 },
@@ -257,6 +257,52 @@
             });
         }
 //
+
+//
+//======================================== 시계열 분석 예측 데이터 바 차트 ============================================
+//
+
+    function drawForecastDataBarChart(labels, data) {
+        var ctx = document.getElementById("forecastDataBarChart").getContext("2d");
+
+        forecastDataBarChart = new Chart(ctx, {
+            type: "bar",
+            data: {
+                labels: labels,
+                datasets: [
+                {
+                    label: '방문자수',
+                    data: data,
+                    backgroundColor: 'rgba(99, 218, 105, 0.8)',
+                    borderColor: "#63DA69",
+                    borderWidth: 1
+                },
+                ]
+            },
+            options: {
+                    title:{
+                        display:true,
+                        text: '시계열 분석 방문자수 예측',
+                        fontSize: 24,
+                        fontStyle: 'normal',
+                        fontFamily: 'SCoreDream'
+                    },
+                    legend:{
+                        display:false
+                    },
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true,
+                                min: 0
+                            }
+                        }]
+                    }
+            }
+        })
+
+    }
+
 
     function setCountOfVisitorDetail(cumSumOfVisitor, countOfVisitor, averageOfVisitor) {
         countOfVisitorDetail.cumSumOfVisitor = cumSumOfVisitor.toLocaleString('ko-KR');
@@ -334,9 +380,9 @@
            async: false,
            success: function(response) {
                cumSum += response;
+
            }
         })
-
 
         $.ajax({
            type: 'GET',
@@ -350,6 +396,28 @@
         return cumSum;
     }
 
+    function getForecastData(){
+
+        forecast = {
+            forecastData : [],
+            forecastDataLabels : []
+        }
+
+        $.ajax({
+            type: 'GET',
+            url: '/api/v1/forecastData',
+            async: false,
+            success: function(response) {
+                response.forEach((data)=>{
+                    forecast.forecastData.push(data.countOfVisitor);
+                    forecast.forecastDataLabels.push(data.month);
+                })
+            }
+         })
+         return forecast;
+    }
+
+
     $(document).ready(function () {
         var year = 2022;
 
@@ -358,5 +426,10 @@
         setYearData(year)
 
         setMonthData(year, month);
+
+        var forecast = getForecastData();
+
+        drawForecastDataBarChart(forecast.forecastDataLabels, forecast.forecastData)
+
     })
 })(jQuery);

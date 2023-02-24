@@ -1,7 +1,5 @@
 package com.thejoen.jeju.repository;
 
-import com.querydsl.core.JoinExpression;
-import com.querydsl.core.JoinType;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
@@ -13,13 +11,11 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.thejoen.jeju.model.entitiy.Content;
 import com.thejoen.jeju.model.entitiy.QContent;
 import com.thejoen.jeju.model.entitiy.QReview;
-import com.thejoen.jeju.model.entitiy.RentalCar;
 import com.thejoen.jeju.model.enumclass.CategoryType;
 import com.thejoen.jeju.model.network.dto.request.ContentSearchRequestDTO;
 import com.thejoen.jeju.model.network.dto.response.ContentResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
-import org.codehaus.groovy.util.StringUtil;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;

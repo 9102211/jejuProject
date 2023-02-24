@@ -1,12 +1,10 @@
 package com.thejoen.jeju.controller.page;
 
 import com.thejoen.jeju.service.DomesticVisitorDataService;
-import com.thejoen.jeju.service.RentalCarService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.time.LocalDate;
 

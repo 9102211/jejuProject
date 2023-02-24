@@ -29,23 +29,28 @@ public class ContentApiController {
     @GetMapping("/{id}")
     public ResponseEntity<ContentResponseDTO> read(@PathVariable String id, HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
 
-        // 기존 쿠키에서 항목을 가져옴
-        List<String> items = getItemsFromCookie(request);
+        ResponseEntity<ContentResponseDTO> contentResponseDTOResponseEntity = contentService.read(id);
 
-        // 새로운 항목을 추가
-        String newItem = URLEncoder.encode(id, "UTF-8");
+        if(!contentResponseDTOResponseEntity.getBody().getCategory().equals("렌트카")) {
 
-        items.add(0, newItem); // 가장 최신 항목으로 추가
+            // 기존 쿠키에서 항목을 가져옴
+            List<String> items = getItemsFromCookie(request);
 
-        // 쿠키에 저장할 항목 수를 최대 10개로 제한
-        if (items.size() > 10) {
-            items = new ArrayList<>(items.subList(0, 10)); // 가장 오래된 항목을 삭제
+            // 새로운 항목을 추가
+            String newItem = URLEncoder.encode(id, "UTF-8");
+
+            items.add(0, newItem); // 가장 최신 항목으로 추가
+
+            // 쿠키에 저장할 항목 수를 최대 10개로 제한
+            if (items.size() > 10) {
+                items = new ArrayList<>(items.subList(0, 10)); // 가장 오래된 항목을 삭제
+            }
+
+            // 항목을 쿠키에 저장
+            saveItemsToCookie(items, response);
         }
 
-        // 항목을 쿠키에 저장
-        saveItemsToCookie(items, response);
-
-        return contentService.read(id);
+        return contentResponseDTOResponseEntity;
     }
 
     @GetMapping("")
@@ -70,6 +75,7 @@ public class ContentApiController {
         String value = String.join("|", items);
         Cookie cookie = new Cookie("history", value);
         cookie.setPath("/");
+        cookie.setMaxAge(60*60*24*14);
         response.addCookie(cookie);
     }
 

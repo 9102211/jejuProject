@@ -1,14 +1,10 @@
 package com.thejoen.jeju.model.network.dto.response;
 
 
-import com.thejoen.jeju.model.entitiy.RentalCar;
 import com.thejoen.jeju.model.enumclass.ReviewType;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.ManyToOne;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 

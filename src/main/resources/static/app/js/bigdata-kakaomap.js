@@ -501,3 +501,14 @@ function setEvChargingStationMarkers() {
         })
     })
 }
+
+function simulation() {
+    $.ajax({
+       type: 'POST',
+       url: 'http://192.168.0.59:5000/key',
+       success: function(response) {
+           console.log(response)
+       }
+    })
+
+}
